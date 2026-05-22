@@ -14,11 +14,10 @@ This document is for LAN-side integrations and describes the currently supported
 - `MS` means meter status, not manufacturer.
 - `ES / AS / DS / BS0..BS5` are firmware version fields, not generic status strings.
 - `PB` is the documented battery power field.
-- `PD / GD1 / GD2 / LD` are raw daily energy counters in `Wh`, not `kWh`.
+- `GD1 / GD2 / LD` are raw daily energy counters in `Wh`, not `kWh`.
 - `MM` is the Local Self-Consumption Mode switch, and `MD` is the meter connection string used by that mode.
 - `TZ` is a POSIX timezone field, not a country or region name. Germany should use a DST-aware POSIX timezone string such as `CET-1CEST,M3.5.0,M10.5.0/3`.
 - `MD` and `TZ` take effect immediately after a write, but the device may not echo the exact written value back.
-- `UP` is the UPS full-charge PV bypass power setting. Its default value depends on the model: `800` for 500 Standard and `2400` for 500 Pro.
 
 ## 2. Scope and General Contract
 
@@ -144,7 +143,6 @@ Write contract notes:
 | `TZ` | `string` | Effect only | POSIX timezone field. | It must be a POSIX timezone string, not a country or region name. Germany should use `CET-1CEST,M3.5.0,M10.5.0/3`; China can use `CST-8`. Do not write `Europe/Berlin`, `Europe/Paris`, `PRC`, `UTC+1`, `UTC+2`, `CET`, or `CEST`. The setting takes effect immediately, but the device may not echo the written `TZ` value back. |
 | `NT` | `integer` | Not guaranteed | Nation / safety profile identifier. | Example: Germany commonly uses `60`. Only write this field when the country-to-profile mapping is clear. |
 | `UO` | `integer` | Yes | UPS mode switch. `0 = off`, `1 = on`. | When `UO = 1`, many non-UPS settings may no longer take effect until UPS mode is disabled. |
-| `UP` | `integer` | Yes | UPS full-charge PV bypass power. | Unit: `W`. Default value: `800` for 500 Standard and `2400` for 500 Pro. In normal use, fill it with the model rated value. |
 | `UG` | `integer` | Yes | UPS grid charging power. | `0` means no grid charging in UPS mode. Recommended non-zero range: `20..2400`. |
 | `FP` | `integer` | Yes | Max PV bypass output power after the battery is full. | Recommended range: `20..current allowed max output power`. The upper limit usually follows the device's currently allowed max grid output capability. |
 
@@ -329,7 +327,6 @@ If the current meter subtype is not listed above, do not fill `MD` for that Tasm
 | `SC0..SC5` | `number` | Master and slave battery SOC values | `SC0` is the master battery, `SC1..SC5` are slaves |
 | `BN` | `integer` | Total battery pack count | Useful for topology awareness |
 | `ON` | `integer` | Online battery pack count | Useful for multi-pack awareness |
-| `PD` | `number` | Daily PV energy | Raw unit `Wh` |
 | `GD1` | `number` | Daily grid charging energy | Raw unit `Wh` |
 | `GD2` | `number` | Daily grid export energy | Raw unit `Wh` |
 | `LD` | `number` | Daily off-grid load output energy | Raw unit `Wh` |
@@ -350,7 +347,6 @@ If the current meter subtype is not listed above, do not fill `MD` for that Tasm
 | `TF / EF / DF1 / DF2 / AF1 / AF2 / BF` | `integer` | Fault bitmasks for prompt, EMS, DC, AC, and BMS domains | Treat these as bitmasks, not as single status codes |
 | `FP` | `integer` | Full-charge PV bypass max output power | Unit `W` |
 | `UO` | `integer` | UPS mode state | `0 = off`, `1 = on` |
-| `UP` | `integer` | UPS full-charge PV bypass power | Unit `W`; the default depends on the model |
 | `UG` | `integer` | UPS grid charging power | Unit `W` |
 | `timestamp` | `integer` | Collection timestamp | Usually milliseconds |
 

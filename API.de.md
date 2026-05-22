@@ -14,11 +14,10 @@ Dieses Dokument richtet sich an Integrationen im lokalen Netzwerk und beschreibt
 - `MS` bedeutet Zaehlerstatus, nicht Hersteller.
 - `ES / AS / DS / BS0..BS5` sind Firmware-Versionsfelder und keine generischen Statusmeldungen.
 - `PB` ist das dokumentierte Feld fuer die Batterieleistung.
-- `PD / GD1 / GD2 / LD` sind rohe Tagesenergiezaehler in `Wh`, nicht in `kWh`.
+- `GD1 / GD2 / LD` sind rohe Tagesenergiezaehler in `Wh`, nicht in `kWh`.
 - `MM` ist der Schalter fuer den lokalen Eigenverbrauchsmodus, und `MD` ist die Zaehlerverbindungs-Zeichenkette, die dieser Modus verwendet.
 - `TZ` ist ein POSIX-Zeitzonenfeld und kein Landes- oder Regionsname. Fuer Deutschland sollte eine POSIX-Zeitzone mit Sommerzeitregel verwendet werden, zum Beispiel `CET-1CEST,M3.5.0,M10.5.0/3`.
 - `MD` und `TZ` wirken direkt nach dem Schreiben, aber das Geraet gibt den exakt geschriebenen Wert moeglicherweise nicht zurueck.
-- `UP` ist die PV-Bypass-Leistung im UPS-Modus nach voller Ladung. Der Standardwert haengt vom Modell ab: `800` fuer 500 Standard und `2400` fuer 500 Pro.
 
 ## 2. Geltungsbereich und allgemeine Regeln
 
@@ -144,7 +143,6 @@ Schreibregeln:
 | `TZ` | `string` | Wirkt direkt | POSIX-Zeitzonenfeld. | Es muss eine POSIX-Zeitzonen-Zeichenkette sein, kein Landes- oder Regionsname. Deutschland sollte `CET-1CEST,M3.5.0,M10.5.0/3` verwenden, China kann `CST-8` verwenden. Schreiben Sie nicht `Europe/Berlin`, `Europe/Paris`, `PRC`, `UTC+1`, `UTC+2`, `CET` oder `CEST`. Die Einstellung wirkt direkt, aber das Geraet gibt den geschriebenen `TZ`-Wert moeglicherweise nicht zurueck. |
 | `NT` | `integer` | Nicht garantiert | Landes-/Sicherheitsprofil-ID. | Beispiel: Deutschland verwendet haeufig `60`. Dieses Feld nur schreiben, wenn die Zuordnung Land-zu-Profil eindeutig bekannt ist. |
 | `UO` | `integer` | Ja | Schalter fuer den UPS-Modus. `0 = aus`, `1 = ein`. | Wenn `UO = 1`, koennen viele nicht UPS-bezogene Einstellungen wirkungslos bleiben, bis der UPS-Modus wieder deaktiviert wird. |
-| `UP` | `integer` | Ja | PV-Bypass-Leistung im UPS-Modus nach voller Ladung. | Einheit: `W`. Standardwert: `800` fuer 500 Standard und `2400` fuer 500 Pro. Im Normalfall sollte der jeweilige Nennwert des Modells gesetzt werden. |
 | `UG` | `integer` | Ja | Netzladeleistung im UPS-Modus. | `0` bedeutet keine Netzladung im UPS-Modus. Empfohlener nicht-null Bereich: `20..2400`. |
 | `FP` | `integer` | Ja | Maximale PV-Bypass-Ausgangsleistung nach vollstaendiger Batterieladung. | Empfohlener Bereich: `20..aktuell zulaessige maximale Ausgangsleistung`. Die Obergrenze folgt in der Regel der aktuell zulaessigen maximalen Netzeinspeiseleistung des Geraets. |
 
@@ -329,7 +327,6 @@ Wenn der aktuelle Zaehler-Subtyp nicht in der obigen Liste aufgefuehrt ist, soll
 | `SC0..SC5` | `number` | SOC-Werte von Master- und Slave-Batterien | `SC0` ist die Master-Batterie, `SC1..SC5` sind Slaves |
 | `BN` | `integer` | Gesamtanzahl der Batteriepacks | Nützlich fuer die Erkennung der Topologie |
 | `ON` | `integer` | Anzahl der online befindlichen Batteriepacks | Nützlich fuer die Erkennung von Mehrpack-Systemen |
-| `PD` | `number` | Taegliche PV-Energie | Rohwert in `Wh` |
 | `GD1` | `number` | Taegliche Netzladeenergie | Rohwert in `Wh` |
 | `GD2` | `number` | Taegliche Netzeinspeiseenergie | Rohwert in `Wh` |
 | `LD` | `number` | Taegliche Inselbetriebs-Lastenergie | Rohwert in `Wh` |
@@ -350,7 +347,6 @@ Wenn der aktuelle Zaehler-Subtyp nicht in der obigen Liste aufgefuehrt ist, soll
 | `TF / EF / DF1 / DF2 / AF1 / AF2 / BF` | `integer` | Fehler-Bitmasks fuer Prompt-, EMS-, DC-, AC- und BMS-Domaenen | Diese Felder als Bitmasks behandeln, nicht als einzelne Statuscodes |
 | `FP` | `integer` | Maximale PV-Bypass-Ausgangsleistung nach voller Ladung | Einheit `W` |
 | `UO` | `integer` | Status des UPS-Modus | `0 = aus`, `1 = ein` |
-| `UP` | `integer` | PV-Bypass-Leistung im UPS-Modus nach voller Ladung | Einheit `W`; der Standardwert haengt vom Modell ab |
 | `UG` | `integer` | Netzladeleistung im UPS-Modus | Einheit `W` |
 | `timestamp` | `integer` | Erfassungszeitstempel | In der Regel Millisekunden |
 
