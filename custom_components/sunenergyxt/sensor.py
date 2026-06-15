@@ -15,7 +15,7 @@ Constants:
 import logging
 from typing import Any
 
-from homeassistant.components.sensor import SensorEntity, SensorStateClass
+from homeassistant.components.sensor import SensorEntity, SensorStateClass, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo, EntityCategory
@@ -35,6 +35,7 @@ SENSOR_META: dict[str, dict[str, Any]] = {
     "WR": {
         "unit": "dB",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.SIGNAL_STRENGTH,
         "icon": "mdi:wifi-strength-2",
     },
     "ST": {
@@ -44,42 +45,49 @@ SENSOR_META: dict[str, dict[str, Any]] = {
     "IW": {
         "unit": "W",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:flash",
     },
     "OP": {
         "unit": "W",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:flash-outline",
     },
     "PV": {
         "unit": "W",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:solar-power",
     },
     "PV1": {
         "unit": "W",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:solar-panel",
     },
     "PV2": {
         "unit": "W",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:solar-panel",
     },
     "PV3": {
         "unit": "W",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:solar-panel",
     },
     "PV4": {
         "unit": "W",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:solar-panel",
     },
@@ -88,6 +96,7 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "scale": 0.1,
         "precision": 1,
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.CURRENT,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:current-dc",
     },
@@ -96,6 +105,7 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "scale": 0.1,
         "precision": 1,
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.CURRENT,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:current-dc",
     },
@@ -104,6 +114,7 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "scale": 0.1,
         "precision": 1,
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.CURRENT,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:current-dc",
     },
@@ -112,6 +123,7 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "scale": 0.1,
         "precision": 1,
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.CURRENT,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:current-dc",
     },
@@ -120,6 +132,7 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "scale": 0.1,
         "precision": 1,
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.VOLTAGE,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:sine-wave",
     },
@@ -128,6 +141,7 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "scale": 0.1,
         "precision": 1,
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.VOLTAGE,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:sine-wave",
     },
@@ -136,6 +150,7 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "scale": 0.1,
         "precision": 1,
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.VOLTAGE,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:sine-wave",
     },
@@ -144,54 +159,62 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "scale": 0.1,
         "precision": 1,
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.VOLTAGE,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:sine-wave",
     },
     "GP": {
         "unit": "W",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:transmission-tower",
     },
     "LP": {
         "unit": "W",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:home-lightning-bolt",
     },
     "GD1": {
-        "unit": "kwh",
+        "unit": "kWh",
         "scale": 0.001,
         "precision": 3,
         "entity_category": EntityCategory.DIAGNOSTIC,
-        "state_class": SensorStateClass.TOTAL,
+        "device_class": SensorDeviceClass.ENERGY,
+        "state_class": SensorStateClass.TOTAL_INCREASING,
         "icon": "mdi:battery-charging",
     },
     "GD2": {
-        "unit": "kwh",
+        "unit": "kWh",
         "scale": 0.001,
         "precision": 3,
         "entity_category": EntityCategory.DIAGNOSTIC,
-        "state_class": SensorStateClass.TOTAL,
+        "device_class": SensorDeviceClass.ENERGY,
+        "state_class": SensorStateClass.TOTAL_INCREASING,
         "icon": "mdi:transmission-tower-export",
     },
     "LD": {
-        "unit": "kwh",
+        "unit": "kWh",
         "scale": 0.001,
         "precision": 3,
         "entity_category": EntityCategory.DIAGNOSTIC,
-        "state_class": SensorStateClass.TOTAL,
+        "device_class": SensorDeviceClass.ENERGY,
+        "state_class": SensorStateClass.TOTAL_INCREASING,
         "icon": "mdi:power-plug-battery-outline",
     },
     "SC": {
         "unit": "%",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.BATTERY,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:battery",
     },
     "SC0": {
         "unit": "%",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.BATTERY,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:battery-outline",
     },
@@ -199,29 +222,34 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "unit": "%",
         "entity_category": EntityCategory.DIAGNOSTIC,
         "state_class": SensorStateClass.MEASUREMENT,
+        "device_class": SensorDeviceClass.BATTERY,
         "icon": "mdi:battery-outline",
     },
     "SC2": {
         "unit": "%",
         "entity_category": EntityCategory.DIAGNOSTIC,
         "state_class": SensorStateClass.MEASUREMENT,
+        "device_class": SensorDeviceClass.BATTERY,
         "icon": "mdi:battery-outline",
     },
     "SC3": {
         "unit": "%",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.BATTERY,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:battery-outline",
     },
     "SC4": {
         "unit": "%",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.BATTERY,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:battery-outline",
     },
     "SC5": {
         "unit": "%",
         "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.BATTERY,
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:battery-outline",
     },
@@ -421,6 +449,10 @@ class SunlitSensor(
         icon = meta.get("icon")
         if icon:
             self._attr_icon = icon
+
+        device_class = meta.get("device_class")
+        if device_class:
+            self._attr_device_class = device_class
 
     @property
     def native_value(self) -> Any:
