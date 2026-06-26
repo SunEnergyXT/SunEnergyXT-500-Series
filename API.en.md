@@ -132,12 +132,15 @@ Write contract notes:
 | Field | Type | Readback | Description | Fill Rule |
 | --- | --- | --- | --- | --- |
 | `GS` | `integer` | Yes | On-grid power setpoint. `>0` means export/feed-in, `<0` means grid import / grid charging, `0` means neutral. | Recommended export range: `0..800` for 500 Standard, `0..2400` for 500 Pro. Recommended import range: `-2400..0` for both models. Recommended step: `10W`. |
-| `IS` | `integer` | Yes | Max grid output / inverter output limit. | Recommended range: `0..800` for 500 Standard, `0..2400` for 500 Pro. When the EMS/Wi-Fi firmware version is not above `1.1.1`, the device may ignore this write. |
+| `IS` | `integer` | Yes | Max inverter output power setpoint. | Recommended range: `1..2400`. When the EMS/Wi-Fi firmware version is not above `1.1.1`, the device may ignore this write. |
+| `MG` | `integer` | Yes | Maximum grid-connected output power. | Recommended range: `1..800` for 500 Standard, `1..2400` for 500 Pro. Recommended step: `1W`. |
 | `SI` | `integer` | Yes | On-grid minimum discharge SOC. | Recommended values: `1`, `10`, or `20`. |
 | `SA` | `integer` | Yes | On-grid maximum charge SOC. | Recommended values: `70`, `80`, `90`, or `100`. |
 | `SO` | `integer` | Yes | Off-grid minimum discharge SOC. | Recommended values: `1`, `10`, or `20`. |
 | `LM` | `integer` | Yes | Local mode switch. `0 = off`, `1 = on`. | Once local mode is enabled, most cloud-side remote control is expected to be restricted until local mode is turned off. |
-| `MM` | `integer` | Yes | Local Self-Consumption Mode switch. `0 = off`, `1 = on`. | The safest pattern is to prepare a valid `MD` first, or submit `MM = 1` together with `MD` in the same request. Confirm final meter status via `MS`. |
+| `MM` | `integer` | Yes | Local Self-Consumption Mode switch. `0 = off`, `1 = on`. | The safest pattern is to prepare a valid `MD` first, or submit `MM = 1` together with `MD` in the same request. The Home Assistant integration clears `MD` when turning `MM` off. Confirm final meter status via `MS`. |
+| `LFB` | `integer` | Yes | Load priority switch. `0 = off`, `1 = on`. | Use only when the device firmware supports load priority. |
+| `LPS` | `integer` | Yes | Off-grid output switch. `0 = off`, `1 = on`. | Use only when the device firmware supports off-grid output control. |
 | `MD` | `string` | Effect only | Meter local connection JSON string. | Fill `MD` with the final device-side JSON string content shown in Section 5. The setting takes effect immediately, but the device may not echo the written `MD` value back. Confirm the result via `MS` and actual meter data. |
 | `RT` | `integer` | Trigger | Device restart trigger. | Write `1` only. Read `/read` again after the device comes back online. |
 | `TZ` | `string` | Effect only | POSIX timezone field. | It must be a POSIX timezone string, not a country or region name. Germany should use `CET-1CEST,M3.5.0,M10.5.0/3`; China can use `CST-8`. Do not write `Europe/Berlin`, `Europe/Paris`, `PRC`, `UTC+1`, `UTC+2`, `CET`, or `CEST`. The setting takes effect immediately, but the device may not echo the written `TZ` value back. |

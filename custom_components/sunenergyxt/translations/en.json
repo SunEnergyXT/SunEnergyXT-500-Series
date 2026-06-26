@@ -191,6 +191,9 @@
             },
             "pt": {
                 "name": "System Auto-Shutdown Time Setting"
+            },
+            "mg": {
+                "name": "Maximum Grid-Connected Output Power"
             }
         },
         "button": {
@@ -207,6 +210,12 @@
             },
             "pm": {
                 "name": "System Parallel Mode"
+            },
+            "lfb": {
+                "name": "Load Priority Switch"
+            },
+            "lps": {
+                "name": "Off-Grid Output Switch"
             }
         },
         "text": {

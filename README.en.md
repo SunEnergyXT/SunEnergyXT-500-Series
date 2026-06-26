@@ -19,8 +19,8 @@ For the complete local API field reference, `MD` meter connection string example
 
 - Discover devices automatically via Zeroconf, or add a device manually by IP address
 - Monitor PV input, grid port power, load port power, battery level, firmware versions, and other real-time data
-- Adjust common settings such as `GS`, `IS`, `SI`, `SA`, `SO`, and `PT`
-- Configure Local Mode, `MM` Local Self-Consumption Mode, `MD` local meter connection settings, and the `TZ` timezone field
+- Adjust common settings such as `GS`, `IS`, `MG`, `SI`, `SA`, `SO`, and `PT`
+- Configure Local Mode, `MM` Local Self-Consumption Mode, `MD` local meter connection settings, `LFB` load priority, `LPS` off-grid output, and the `TZ` timezone field
 - Restart the device from Home Assistant
 
 ## Installation
@@ -139,7 +139,8 @@ Notes:
 | Entity ID | Name | Unit | Range | Step | Description |
 |-----------|------|------|-------|------|-------------|
 | `GS` | System Grid Port Power Setpoint | W | `-2400` to `2400` | `10` | Grid port power setpoint. A positive value usually means export/feed-in; a negative value usually means grid import or grid charging. The common positive upper limit is `800W` for 500 Standard and `2400W` for 500 Pro |
-| `IS` | System Max Inverter Power Setpoint | W | `1` to `2400` | `10` | Maximum inverter output power. The upper limit is `800W` for 500 Standard and `2400W` for 500 Pro |
+| `IS` | System Max Inverter Power Setpoint | W | `1` to `2400` | `10` | Maximum inverter output power setpoint |
+| `MG` | Maximum Grid-Connected Output Power | W | `1` to `2400` | `1` | Maximum grid-connected output power. The upper limit is `800W` for 500 Standard and `2400W` for 500 Pro |
 | `SI` | System Min Discharge SOC | % | `1` to `30` | `1` | Minimum SOC allowed for discharge in on-grid scenarios |
 | `SA` | System Max Charge SOC | % | `70` to `100` | `1` | Maximum SOC allowed for charge in on-grid scenarios |
 | `SO` | System Load Port Discharge Limit SOC | % | `1` to `30` | `1` | Minimum SOC allowed for discharge in off-grid / load port scenarios |
@@ -150,8 +151,10 @@ Notes:
 | Entity ID | Name | Description |
 |-----------|------|-------------|
 | `LM` | Local mode | Local mode switch. When enabled, the device prioritizes local-side configuration |
-| `MM` | Local Self-Consumption Mode | Local self-consumption mode switch. Prepare a valid `MD` local meter connection setting before enabling it |
+| `MM` | Local Self-Consumption Mode | Local self-consumption mode switch. Prepare a valid `MD` local meter connection setting before enabling it. Turning it off also clears `MD` |
 | `PM` | System Parallel Mode | Parallel mode switch. Use only when the device topology and firmware support it |
+| `LFB` | Load Priority Switch | Load priority switch |
+| `LPS` | Off-Grid Output Switch | Off-grid output switch |
 
 ### Text
 

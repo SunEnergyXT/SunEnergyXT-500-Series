@@ -19,8 +19,8 @@ Die vollstaendige Referenz der lokalen API, Beispiele fuer `MD`-Zaehlerverbindun
 
 - Automatische Geraeteerkennung ueber Zeroconf oder manuelles Hinzufuegen per IP-Adresse
 - Ueberwachung von PV-Eingang, Netzanschlussleistung, Lastanschlussleistung, Batteriestand, Firmware-Versionen und weiteren Echtzeitdaten
-- Anpassung haeufig genutzter Einstellungen wie `GS`, `IS`, `SI`, `SA`, `SO` und `PT`
-- Konfiguration von lokalem Modus, `MM` Lokaler Eigenverbrauch, `MD` lokale Smart-Meter-Verbindung und dem Zeitzonenfeld `TZ`
+- Anpassung haeufig genutzter Einstellungen wie `GS`, `IS`, `MG`, `SI`, `SA`, `SO` und `PT`
+- Konfiguration von lokalem Modus, `MM` Lokaler Eigenverbrauch, `MD` lokale Smart-Meter-Verbindung, `LFB` Lastprioritaet, `LPS` Inselausgang und dem Zeitzonenfeld `TZ`
 - Neustart des Geraets direkt aus Home Assistant
 
 ## Installation
@@ -139,7 +139,8 @@ Hinweise:
 | Entitaets-ID | Name | Einheit | Bereich | Schritt | Beschreibung |
 |--------------|------|---------|---------|----------|--------------|
 | `GS` | Sollwert Leistung Netzanschluss | W | `-2400` bis `2400` | `10` | Sollwert fuer die Leistung am Netzanschluss. Positive Werte bedeuten in der Regel Einspeisung, negative Werte in der Regel Netzbezug oder Netzladen. Die uebliche obere positive Grenze ist `800W` fuer SunEnergyXT 500 und `2400W` fuer SunEnergyXT 500 Pro |
-| `IS` | Sollwert max. Wechselrichterleistung | W | `1` bis `2400` | `10` | Maximale Wechselrichter-Ausgangsleistung. Die Obergrenze liegt bei `800W` fuer SunEnergyXT 500 und `2400W` fuer SunEnergyXT 500 Pro |
+| `IS` | Sollwert max. Wechselrichterleistung | W | `1` bis `2400` | `10` | Sollwert fuer die maximale Wechselrichter-Ausgangsleistung |
+| `MG` | Maximale netzgekoppelte Ausgangsleistung | W | `1` bis `2400` | `1` | Maximale netzgekoppelte Ausgangsleistung. Die Obergrenze liegt bei `800W` fuer SunEnergyXT 500 und `2400W` fuer SunEnergyXT 500 Pro |
 | `SI` | System Entladegrenze | % | `1` bis `30` | `1` | Minimaler SOC fuer Entladung im On-Grid-Betrieb |
 | `SA` | System Ladegrenze | % | `70` bis `100` | `1` | Maximaler SOC fuer Ladung im On-Grid-Betrieb |
 | `SO` | Systemlastanschluss-Entladegrenze | % | `1` bis `30` | `1` | Minimaler SOC fuer Entladung im Off-Grid- bzw. Lastanschluss-Betrieb |
@@ -150,8 +151,10 @@ Hinweise:
 | Entitaets-ID | Name | Beschreibung |
 |--------------|------|--------------|
 | `LM` | Lokaler Modus | Schalter fuer den lokalen Modus. Wenn aktiv, priorisiert das Geraet die lokale Konfiguration |
-| `MM` | Lokaler Eigenverbrauch | Schalter fuer den Modus "Lokaler Eigenverbrauch". Vor dem Aktivieren sollte eine gueltige `MD`-Smart-Meter-Verbindung hinterlegt werden |
+| `MM` | Lokaler Eigenverbrauch | Schalter fuer den Modus "Lokaler Eigenverbrauch". Vor dem Aktivieren sollte eine gueltige `MD`-Smart-Meter-Verbindung hinterlegt werden. Beim Ausschalten wird `MD` ebenfalls geleert |
 | `PM` | Parallelschaltmodus des Systems | Schalter fuer den Parallelbetrieb. Nur verwenden, wenn Geraetetopologie und Firmware dies unterstuetzen |
+| `LFB` | Schalter fuer Lastprioritaet | Schalter fuer Lastprioritaet |
+| `LPS` | Schalter fuer den Inselausgang | Schalter fuer den Inselausgang |
 
 ### Text
 

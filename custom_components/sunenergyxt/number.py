@@ -73,6 +73,13 @@ NUMBER_META: dict[str, dict[str, Any]] = {
         "unit": "min",
         "icon": "mdi:timer-outline",
     },
+    "MG": {
+        "min_value": 1,
+        "max_value": 2400,
+        "step": 1,
+        "unit": "W",
+        "icon": "mdi:flash",
+    },
 }
 
 
@@ -113,6 +120,7 @@ async def async_setup_entry(
         "SA",
         "SO",
         "PT",
+        "MG",
     ]
 
     for key in keys:
@@ -188,7 +196,7 @@ class SunlitNumber(CoordinatorEntity[SunlitDataUpdateCoordinator], NumberEntity)
         if device_info["model"] == "SunEnergyXT 500":
             if self._key == "GS":
                 self._attr_native_max_value = 800
-            if self._key == "IS":
+            if self._key == "MG":
                 self._attr_native_max_value = 800
 
         step = meta.get("step")

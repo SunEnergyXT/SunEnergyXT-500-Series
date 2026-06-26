@@ -191,6 +191,9 @@
             },
             "pt": {
                 "name": "Einstellung der automatischen Abschaltzeit"
+            },
+            "mg": {
+                "name": "Maximale netzgekoppelte Ausgangsleistung"
             }
         },
         "button": {
@@ -207,6 +210,12 @@
             },
             "pm": {
                 "name": "Parallelschaltmodus des Systems"
+            },
+            "lfb": {
+                "name": "Schalter fuer Lastprioritaet"
+            },
+            "lps": {
+                "name": "Schalter fuer den Inselausgang"
             }
         },
         "text": {
