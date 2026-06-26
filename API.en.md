@@ -13,7 +13,7 @@ This document is for LAN-side integrations and describes the currently supported
 - The stable `/write` request shape is `{"state":{"FIELD": value}}`. Partial field updates are recommended.
 - `MS` means meter status, not manufacturer.
 - `ES / AS / DS / BS0..BS5` are firmware version fields, not generic status strings.
-- `PB` is the documented battery power field.
+- `BP` is the documented battery power field.
 - `GD1 / GD2 / LD` are raw daily energy counters in `Wh`, not `kWh`.
 - `MM` is the Local Self-Consumption Mode switch, and `MD` is the meter connection string used by that mode.
 - `TZ` is a POSIX timezone field, not a country or region name. Germany should use a DST-aware POSIX timezone string such as `CET-1CEST,M3.5.0,M10.5.0/3`.
@@ -76,7 +76,7 @@ Stable response shape example:
       "OP": 1510,
       "GP": -1530,
       "LP": 0,
-      "PB": 1450,
+      "BP": 1450,
       "SC": 54,
       "SC0": 54,
       "GD1": 5683,
@@ -320,7 +320,7 @@ If the current meter subtype is not listed above, do not fill `MD` for that Tasm
 | `VP1..VP4` | `number` | MPPT 1..4 voltage | Unit `V` |
 | `GP` | `number` | Grid power. Positive means export/feed-in, negative means import/grid charging | Unit `W` |
 | `LP` | `number` | Load power | Unit `W` |
-| `PB` | `number` | Battery power. Positive means charging, negative means discharging | Unit `W` |
+| `BP` | `number` | Battery power. Positive means charging, negative means discharging | Unit `W` |
 | `IW` | `number` | Total input power | Unit `W` |
 | `OP` | `number` | Total output power | Unit `W` |
 | `SC` | `number` | Total system SOC | Unit `%` |

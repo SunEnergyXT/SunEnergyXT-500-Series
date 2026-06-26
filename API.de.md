@@ -13,7 +13,7 @@ Dieses Dokument richtet sich an Integrationen im lokalen Netzwerk und beschreibt
 - Die stabile Anfragestruktur von `/write` ist `{"state":{"FIELD": value}}`. Partielle Feldupdates werden empfohlen.
 - `MS` bedeutet Zaehlerstatus, nicht Hersteller.
 - `ES / AS / DS / BS0..BS5` sind Firmware-Versionsfelder und keine generischen Statusmeldungen.
-- `PB` ist das dokumentierte Feld fuer die Batterieleistung.
+- `BP` ist das dokumentierte Feld fuer die Batterieleistung.
 - `GD1 / GD2 / LD` sind rohe Tagesenergiezaehler in `Wh`, nicht in `kWh`.
 - `MM` ist der Schalter fuer den lokalen Eigenverbrauchsmodus, und `MD` ist die Zaehlerverbindungs-Zeichenkette, die dieser Modus verwendet.
 - `TZ` ist ein POSIX-Zeitzonenfeld und kein Landes- oder Regionsname. Fuer Deutschland sollte eine POSIX-Zeitzone mit Sommerzeitregel verwendet werden, zum Beispiel `CET-1CEST,M3.5.0,M10.5.0/3`.
@@ -76,7 +76,7 @@ Beispiel fuer die stabile Antwortstruktur:
       "OP": 1510,
       "GP": -1530,
       "LP": 0,
-      "PB": 1450,
+      "BP": 1450,
       "SC": 54,
       "SC0": 54,
       "GD1": 5683,
@@ -320,7 +320,7 @@ Wenn der aktuelle Zaehler-Subtyp nicht in der obigen Liste aufgefuehrt ist, soll
 | `VP1..VP4` | `number` | Spannung MPPT 1..4 | Einheit `V` |
 | `GP` | `number` | Netzleistung. Positiv bedeutet Einspeisung, negativ bedeutet Netzbezug bzw. Netzladung | Einheit `W` |
 | `LP` | `number` | Lastleistung | Einheit `W` |
-| `PB` | `number` | Batterieleistung. Positiv bedeutet Laden, negativ bedeutet Entladen | Einheit `W` |
+| `BP` | `number` | Batterieleistung. Positiv bedeutet Laden, negativ bedeutet Entladen | Einheit `W` |
 | `IW` | `number` | Gesamte Eingangsleistung | Einheit `W` |
 | `OP` | `number` | Gesamte Ausgangsleistung | Einheit `W` |
 | `SC` | `number` | Gesamt-SOC des Systems | Einheit `%` |
