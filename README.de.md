@@ -111,6 +111,7 @@ Hinweise:
 | `VP4` | PV 4 Eingangsspannung | V | Eingangsspannung von MPPT-Kanal 4 |
 | `GP` | Systemleistung am Netzanschluss | W | Leistung am Netzanschluss. Positive Werte bedeuten in der Regel Einspeisung, negative Werte in der Regel Netzbezug oder Netzladen |
 | `LP` | Systemleistung am Lastanschluss | W | Aktuelle Leistung am Lastanschluss |
+| `BP` | System-Batterieleistung | W | Aktuelle Batterieleistung. Positive Werte bedeuten Laden, negative Werte bedeuten Entladen |
 | `GD1` | Heutige Netzladung | kWh | Energie, die heute aus dem Netz in das System geladen wurde |
 | `GD2` | Heutige Netzeinspeisung | kWh | Energie, die heute ueber den Netzanschluss ins Netz eingespeist wurde |
 | `LD` | Heutige Off-Grid-Ausgabe | kWh | Heute abgegebene Off-Grid-Ausgangsenergie |
@@ -190,6 +191,12 @@ Hinweise:
 - Stellen Sie sicher, dass `MM` aktiviert ist
 - Pruefen Sie, ob `MS` einen online gemeldeten Zaehler zeigt und ob echte Zaehlerdaten aktualisiert werden
 - Verlassen Sie sich nach dem Schreiben nicht auf `MD` als garantiertes Echo
+
+### Nutzung der Home-Assistant-Nulleinspeisungs-Blueprint
+
+- Wenn Sie die Home-Assistant-Automatisierungs-Blueprint fuer Nulleinspeisung verwenden, deaktivieren Sie die lokale Nulleinspeisung bzw. den lokalen Eigenverbrauchsmodus (`MM`) des Geraets
+- Die Blueprint arbeitet mit Home-Assistant-Zaehlerentitaeten und Home-Assistant-Automatisierungslogik; sie nutzt nicht den direkten lokalen Zaehlerlesepfad des Geraets
+- Wenn Sie die geraeteeigene lokale Nulleinspeisungsfunktion verwenden moechten, konfigurieren Sie stattdessen die Zaehlerverbindung im Geraet. In diesem Modus muss der Zaehler nicht ueber Home Assistant verbunden sein
 
 ### Zeitzone ist falsch eingestellt
 

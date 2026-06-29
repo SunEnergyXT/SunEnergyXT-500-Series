@@ -101,6 +101,9 @@
             "lp": {
                 "name": "System Load Port Power"
             },
+            "bp": {
+                "name": "System Battery Power"
+            },
             "gd1": {
                 "name": "Today's Grid Charge Energy"
             },

@@ -101,6 +101,9 @@
             "lp": {
                 "name": "Systemleistung am Lastanschluss"
             },
+            "bp": {
+                "name": "System-Batterieleistung"
+            },
             "gd1": {
                 "name": "Heutige Netzladung"
             },

@@ -13,7 +13,7 @@ This document is for LAN-side integrations and describes the currently supported
 - The stable `/write` request shape is `{"state":{"FIELD": value}}`. Partial field updates are recommended.
 - `MS` means meter status, not manufacturer.
 - `ES / AS / DS / BS0..BS5` are firmware version fields, not generic status strings.
-- `PB` is the documented battery power field.
+- `BP` is the documented battery power field.
 - `GD1 / GD2 / LD` are raw daily energy counters in `Wh`, not `kWh`.
 - `MM` is the Local Self-Consumption Mode switch, and `MD` is the meter connection string used by that mode.
 - `TZ` is a POSIX timezone field, not a country or region name. Germany should use a DST-aware POSIX timezone string such as `CET-1CEST,M3.5.0,M10.5.0/3`.
@@ -76,7 +76,7 @@ Stable response shape example:
       "OP": 1510,
       "GP": -1530,
       "LP": 0,
-      "PB": 1450,
+      "BP": 1450,
       "SC": 54,
       "SC0": 54,
       "GD1": 5683,
@@ -323,7 +323,7 @@ If the current meter subtype is not listed above, do not fill `MD` for that Tasm
 | `VP1..VP4` | `number` | MPPT 1..4 voltage | Unit `V` |
 | `GP` | `number` | Grid power. Positive means export/feed-in, negative means import/grid charging | Unit `W` |
 | `LP` | `number` | Load power | Unit `W` |
-| `PB` | `number` | Battery power. Positive means charging, negative means discharging | Unit `W` |
+| `BP` | `number` | Battery power. Positive means charging, negative means discharging | Unit `W` |
 | `IW` | `number` | Total input power | Unit `W` |
 | `OP` | `number` | Total output power | Unit `W` |
 | `SC` | `number` | Total system SOC | Unit `%` |
@@ -437,4 +437,5 @@ Content-Type: application/json
 - For `MD` and `TZ`, confirm the result by the resulting effect. Do not rely on those fields as guaranteed direct echo values.
 - For normal monitoring, `2s ~ 5s` polling is usually reasonable. For short-term write confirmation, `1s ~ 2s` can be used temporarily.
 - Avoid mixing unrelated actions in the same `/write` request, especially `RT` together with configuration updates.
+- If a Home Assistant zero feed-in automation blueprint controls the device, keep the device's local zero feed-in / Local Self-Consumption Mode (`MM`) disabled. The blueprint follows Home Assistant meter entities and Home Assistant automation logic, while `MM` + `MD` lets the device read the configured local meter directly.
 - If you need to support multiple firmware branches, implement only against the stable core fields defined in this document. Do not assume undocumented fields are always present.

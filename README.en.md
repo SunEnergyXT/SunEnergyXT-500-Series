@@ -111,6 +111,7 @@ Notes:
 | `VP4` | PV 4 Input Voltage | V | MPPT channel 4 input voltage |
 | `GP` | System Grid Port Power | W | Grid port power. A positive value usually means export/feed-in; a negative value usually means grid import or grid charging |
 | `LP` | System Load Port Power | W | Current load port power |
+| `BP` | System Battery Power | W | Current battery power. A positive value means charging; a negative value means discharging |
 | `GD1` | Today's Grid Charge Energy | kWh | Today's energy charged into the system from the grid |
 | `GD2` | Today's Grid Feed-in Energy | kWh | Today's energy exported to the grid through the grid port |
 | `LD` | Today's Off-grid Output Energy | kWh | Today's off-grid inverter output energy |
@@ -190,6 +191,12 @@ Notes:
 - Make sure `MM` is enabled
 - Check whether `MS` reports an online meter status and whether live meter data is updating
 - Do not rely on `MD` itself as a guaranteed echo after writing
+
+### Using the Home Assistant Zero Feed-in Blueprint
+
+- If you use the Home Assistant zero feed-in automation blueprint, disable the device's local zero feed-in / Local Self-Consumption Mode (`MM`)
+- The blueprint uses Home Assistant meter entities and Home Assistant automation logic; it does not use the device's direct local meter-reading path
+- If you prefer the device's built-in local zero feed-in function, configure the meter connection on the device side instead. In that mode, the meter does not need to be connected through Home Assistant
 
 ### Timezone Setting Is Incorrect
 
