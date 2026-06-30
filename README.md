@@ -81,15 +81,16 @@ Hinweise zur Nutzung:
 
 ## Auswahl des Nulleinspeisungsmodus
 
-Verwenden Sie immer nur einen Regelpfad fuer Nulleinspeisung gleichzeitig. Wenn geraeteinterner lokaler Modus, Home-Assistant-Blueprint und App-/Cloud-Steuerung gleichzeitig gemischt werden, ist das resultierende Verhalten schwer vorhersehbar.
+Verwenden Sie immer nur einen Regelpfad fuer Nulleinspeisung gleichzeitig. Wenn geraeteinterner lokaler Modus und Home-Assistant-Blueprint gleichzeitig gemischt werden, ist das resultierende Verhalten schwer vorhersehbar.
 
 | Modus | Wo die Regelung laeuft | Zaehlerquelle | Wann verwenden |
 |-------|------------------------|---------------|----------------|
 | Geraeteinterner lokaler Eigenverbrauch (`MM` + `MD`) | In der Firmware des SunEnergyXT-Geraets | Direkt im Geraet ueber `MD` konfigurierter Zaehler | Verwenden, wenn der Zaehler zu den dokumentierten geraeteinternen Zaehlerarten gehoert und das Geraet den Zaehler direkt auslesen soll |
 | Home-Assistant-Nulleinspeisungs-Blueprint | In der Home-Assistant-Automatisierung | Home-Assistant-Zaehlerentitaeten | Verwenden, wenn der Zaehler bereits in Home Assistant verfuegbar ist oder wenn eigene Zaehlerformeln, eigene Logik oder eine besser nachvollziehbare Regelung benoetigt werden |
-| App-/Cloud-Nulleinspeisung | SunEnergyXT App-/Cloud-Pfad | In App/Cloud konfigurierter Zaehlerpfad | Nur verwenden, wenn bewusst der App-/Cloud-Regelpfad genutzt werden soll |
 
 Der geraeteinterne lokale Eigenverbrauch unterstuetzt aktuell nur die in [API.md](API.md) dokumentierten Zaehlerkategorien, z. B. Shelly 3EM, Shelly Pro 3EM, EcoTracker und Tasmota / BitShake. Andere Zaehler werden vom geraeteinternen Modus nicht automatisch unterstuetzt, ausser sie werden dem Geraet in einem dieser dokumentierten Formate bereitgestellt.
+
+In der SunEnergyXT App ist **Smarte Strategie - Lokales Netzwerk (WLAN)** der App-seitige Einrichtungsweg fuer dieselbe geraeteinterne Funktion `Lokaler Eigenverbrauch`.
 
 Die offizielle Home-Assistant-Blueprint wird separat gepflegt: [SunEnergyXT Nulleinspeisungs-Blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). Wenn diese Blueprint verwendet wird, sollte `MM` deaktiviert bleiben, weil die Blueprint das Geraet ueber Home-Assistant-Entitaeten steuert und nicht den direkten lokalen Zaehlerlesepfad des Geraets nutzt.
 

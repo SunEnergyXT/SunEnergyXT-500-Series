@@ -81,15 +81,16 @@ Usage notes:
 
 ## Zero Feed-in Mode Selection
 
-Use only one zero feed-in control path at a time. Mixing the device's local meter control, the Home Assistant blueprint, and App/cloud control can make the resulting behavior difficult to predict.
+Use only one zero feed-in control path at a time. Mixing the device's local meter control and the Home Assistant blueprint can make the resulting behavior difficult to predict.
 
 | Mode | Where control runs | Meter source | When to use it |
 |------|--------------------|--------------|----------------|
 | Device local self-consumption (`MM` + `MD`) | On the SunEnergyXT device firmware | A meter configured directly in the device through `MD` | Use this when your meter is one of the documented device-local meter types and you want the device to read the meter directly |
 | Home Assistant zero feed-in blueprint | In Home Assistant automation | Home Assistant meter entities | Use this when the meter is already available in Home Assistant, or when you need custom meter formulas, custom logic, or easier inspection of the control behavior |
-| App/cloud zero feed-in | SunEnergyXT App/cloud path | App/cloud configured meter path | Use this only when you intentionally want the App/cloud control path |
 
 Device local self-consumption currently supports only the meter categories documented in [API.md](API.md), such as Shelly 3EM, Shelly Pro 3EM, EcoTracker, and Tasmota / BitShake. Other meters are not automatically supported by the device-local mode unless they are exposed to the device in one of those documented formats.
+
+In the SunEnergyXT app, **Smart Strategy - Local Network (WLAN)** is the app-side setup path for the same device-local self-consumption function.
 
 The official Home Assistant blueprint is maintained separately: [SunEnergyXT zero feed-in blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). When using the blueprint, keep `MM` disabled because the blueprint controls the device from Home Assistant entities instead of using the device's direct local meter-reading path.
 
