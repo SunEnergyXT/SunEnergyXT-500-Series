@@ -20,7 +20,7 @@ For the complete local API field reference, `MD` meter connection string example
 - Discover devices automatically via Zeroconf, or add a device manually by IP address
 - Monitor PV input, grid port power, load port power, battery level, firmware versions, and other real-time data
 - Adjust common settings such as `GS`, `IS`, `MG`, `SI`, `SA`, `SO`, and `PT`
-- Configure Local Mode, `MM` Local Self-Consumption Mode, `MD` local meter connection settings, `LFB` load priority, `LPS` off-grid output, and the `TZ` timezone field
+- Configure Local Mode, `MM` Local Zero Feed-in mode, `MD` local meter connection settings, `LFB` load priority, `LPS` off-grid output, and the `TZ` timezone field
 - Restart the device from Home Assistant
 
 ## Installation
@@ -85,16 +85,16 @@ Use only one zero feed-in control path at a time. Mixing the device's local mete
 
 | Mode | Where control runs | Meter source | When to use it |
 |------|--------------------|--------------|----------------|
-| Device local self-consumption (`MM` + `MD`) | On the SunEnergyXT device firmware | A meter configured directly in the device through `MD` | Use this when your meter is one of the documented device-local meter types and you want the device to read the meter directly |
+| Device-local zero feed-in mode (`MM` + `MD`) | On the SunEnergyXT device firmware | A meter configured directly in the device through `MD` | Use this when your meter is one of the documented device-local meter types and you want the device to read the meter directly |
 | Home Assistant zero feed-in blueprint | In Home Assistant automation | Home Assistant meter entities | Use this when the meter is already available in Home Assistant, or when you need custom meter formulas, custom logic, or easier inspection of the control behavior |
 
-Device local self-consumption currently supports only the meter categories documented in [API.md](API.md), such as Shelly 3EM, Shelly Pro 3EM, EcoTracker, and Tasmota / BitShake. Other meters are not automatically supported by the device-local mode unless they are exposed to the device in one of those documented formats.
+Device-local zero feed-in mode currently supports only the meter categories documented in [API.md](API.md), such as Shelly 3EM, Shelly Pro 3EM, EcoTracker, and Tasmota / BitShake. Other meters are not automatically supported by the device-local mode unless they are exposed to the device in one of those documented formats.
 
-In the SunEnergyXT app, **Smart Strategy - Local Network (WLAN)** is the app-side setup path for the same device-local self-consumption function.
+In the SunEnergyXT app, **Smart Strategy - Local Network (WLAN)** is the app-side setup path for the same device-local function shown in the Home Assistant integration as `Local Zero Feed-in mode` (`MM`).
 
 The official Home Assistant blueprint is maintained separately: [SunEnergyXT zero feed-in blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). When using the blueprint, keep `MM` disabled because the blueprint controls the device from Home Assistant entities instead of using the device's direct local meter-reading path.
 
-To use the device-local path from Home Assistant, open the SunEnergyXT device in Home Assistant and edit the `Local Meter Connection Settings` text entity (`MD`) with the final meter JSON from [API.md](API.md). Then enable `Local Self-Consumption Mode` (`MM`). The `MD` entity is a write field for the device-local meter connection, not a guaranteed readback field; confirm the result through `Meter Status` (`MS`) and live meter behavior.
+To use the device-local path from Home Assistant, open the SunEnergyXT device in Home Assistant and edit the `Local Meter Connection Settings` text entity (`MD`) with the final meter JSON from [API.md](API.md). Then enable `Local Zero Feed-in mode` (`MM`). The `MD` entity is a write field for the device-local meter connection, not a guaranteed readback field; confirm the result through `Meter Status` (`MS`) and live meter behavior.
 
 ## Entity Description
 
@@ -169,7 +169,7 @@ Notes:
 | Entity ID | Name | Description |
 |-----------|------|-------------|
 | `LM` | Local mode | Local mode switch. When enabled, the device prioritizes local-side configuration |
-| `MM` | Local Self-Consumption Mode | Local self-consumption mode switch. Prepare a valid `MD` local meter connection setting before enabling it. Turning it off also clears `MD` |
+| `MM` | Local Zero Feed-in mode | Local zero feed-in mode switch. Prepare a valid `MD` local meter connection setting before enabling it. Turning it off also clears `MD` |
 | `PM` | System Parallel Mode | Parallel mode switch. Use only when the device topology and firmware support it |
 | `LFB` | Load Priority Switch | Load priority switch |
 | `LPS` | Off-Grid Output Switch | Off-grid output switch |
@@ -178,7 +178,7 @@ Notes:
 
 | Entity ID | Name | Description |
 |-----------|------|-------------|
-| `MD` | Local Meter Connection Settings | Local meter connection JSON string for Local Self-Consumption Mode. Fill in the exact final device-side value shown in [API.md](API.md). It takes effect directly, but should not be used as a guaranteed readback field |
+| `MD` | Local Meter Connection Settings | Local meter connection JSON string for Local Zero Feed-in mode. Fill in the exact final device-side value shown in [API.md](API.md). It takes effect directly, but should not be used as a guaranteed readback field |
 | `TZ` | System Time Zone | POSIX timezone string. For example, China can use `CST-8`; Germany with DST can use `CET-1CEST,M3.5.0,M10.5.0/3`. It takes effect directly, but should not be used as a guaranteed readback field |
 
 ### Button
@@ -202,7 +202,7 @@ Notes:
 - Check whether `http://device-ip/read` is reachable directly
 - After changing a control item, confirm the final result by reading the device state again
 
-### Local Self-Consumption Mode Does Not Work
+### Local Zero Feed-in Mode Does Not Work
 
 - Make sure `MD` follows the exact meter-type example shown in [API.md](API.md)
 - Make sure `MM` is enabled
@@ -212,7 +212,7 @@ Notes:
 
 ### Using the Home Assistant Zero Feed-in Blueprint
 
-- If you use the Home Assistant zero feed-in automation blueprint, disable the device's local zero feed-in / Local Self-Consumption Mode (`MM`)
+- If you use the Home Assistant zero feed-in automation blueprint, disable the device's `Local Zero Feed-in mode` (`MM`)
 - The blueprint uses Home Assistant meter entities and Home Assistant automation logic; it does not use the device's direct local meter-reading path
 - If you prefer the device's built-in local zero feed-in function, configure the meter connection on the device side instead. In that mode, the meter does not need to be connected through Home Assistant
 - If your meter is not supported by the device-local `MM` + `MD` mode but is available as a Home Assistant power entity, use the blueprint path instead

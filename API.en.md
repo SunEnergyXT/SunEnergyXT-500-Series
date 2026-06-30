@@ -15,7 +15,7 @@ This document is for LAN-side integrations and describes the currently supported
 - `ES / AS / DS / BS0..BS5` are firmware version fields, not generic status strings.
 - `BP` is the documented battery power field.
 - `GD1 / GD2 / LD` are raw daily energy counters in `Wh`, not `kWh`.
-- `MM` is the Local Self-Consumption Mode switch, and `MD` is the meter connection string used by that mode.
+- `MM` is the Local Zero Feed-in mode switch, and `MD` is the meter connection string used by that mode.
 - `TZ` is a POSIX timezone field, not a country or region name. Germany should use a DST-aware POSIX timezone string such as `CET-1CEST,M3.5.0,M10.5.0/3`.
 - `MD` and `TZ` take effect immediately after a write, but the device may not echo the exact written value back.
 
@@ -138,7 +138,7 @@ Write contract notes:
 | `SA` | `integer` | Yes | On-grid maximum charge SOC. | Recommended values: `70`, `80`, `90`, or `100`. |
 | `SO` | `integer` | Yes | Off-grid minimum discharge SOC. | Recommended values: `1`, `10`, or `20`. |
 | `LM` | `integer` | Yes | Local mode switch. `0 = off`, `1 = on`. | Once local mode is enabled, most cloud-side remote control is expected to be restricted until local mode is turned off. |
-| `MM` | `integer` | Yes | Local Self-Consumption Mode switch. `0 = off`, `1 = on`. | The safest pattern is to prepare a valid `MD` first, or submit `MM = 1` together with `MD` in the same request. The Home Assistant integration clears `MD` when turning `MM` off. Confirm final meter status via `MS`. |
+| `MM` | `integer` | Yes | Local Zero Feed-in mode switch. `0 = off`, `1 = on`. | The safest pattern is to prepare a valid `MD` first, or submit `MM = 1` together with `MD` in the same request. The Home Assistant integration clears `MD` when turning `MM` off. Confirm final meter status via `MS`. |
 | `LFB` | `integer` | Yes | Load priority switch. `0 = off`, `1 = on`. | Use only when the device firmware supports load priority. |
 | `LPS` | `integer` | Yes | Off-grid output switch. `0 = off`, `1 = on`. | Use only when the device firmware supports off-grid output control. |
 | `MD` | `string` | Effect only | Meter local connection JSON string. | Fill `MD` with the final device-side JSON string content shown in Section 5. The setting takes effect immediately, but the device may not echo the written `MD` value back. Confirm the result via `MS` and actual meter data. |
@@ -194,7 +194,7 @@ Field meanings:
 
 ### 5.2 Supported Meter Categories
 
-The device currently supports the following four meter categories for Local Self-Consumption Mode:
+The device currently supports the following four meter categories for Local Zero Feed-in mode:
 
 | Meter Type | Final `mode` | Final Connection Fields | Final `dat_str.pwr` | Fill Notes |
 | --- | --- | --- | --- | --- |
@@ -308,7 +308,7 @@ The following table contains the complete currently available BitShake / Tasmota
 | `Smarty` | `power` |
 | `SML` | `Power` |
 
-If the current meter subtype is not listed above, do not fill `MD` for that Tasmota meter. Otherwise the device will not be able to read the meter correctly in Local Self-Consumption Mode.
+If the current meter subtype is not listed above, do not fill `MD` for that Tasmota meter. Otherwise the device will not be able to read the meter correctly in Local Zero Feed-in mode.
 
 ## 6. Stable Reported Fields
 
@@ -338,7 +338,7 @@ If the current meter subtype is not listed above, do not fill `MD` for that Tasm
 | `IS` | `integer` | Echo of the current max grid output setting | Upper bound depends on model |
 | `SI / SA / SO` | `integer` | SOC limits | `SI1 / SA1` are reserved fields and should not be assumed by default |
 | `LM` | `integer` | Local mode state | `0 = off`, `1 = on` |
-| `MM` | `integer` | Local Self-Consumption Mode state | `0 = off`, `1 = on` |
+| `MM` | `integer` | Local Zero Feed-in mode state | `0 = off`, `1 = on` |
 | `MD` | `string` | Meter connection runtime value when present | Do not use it as guaranteed echo of the last written `MD` |
 | `MS` | `integer` | Meter state | Current known values: `0 = no meter bound`, `1 = online`, `2 = offline`, `3 = requesting IP` |
 | `IP` | `string` | Local mode IP address | Reported by the device |
@@ -403,7 +403,7 @@ Content-Type: application/json
 
 The setting takes effect immediately, but the device may not echo the same `TZ` value back.
 
-### 7.5 Enable Local Self-Consumption Mode with Shelly Pro 3EM
+### 7.5 Enable Local Zero Feed-in mode with Shelly Pro 3EM
 
 ```http
 POST http://192.168.1.102/write
@@ -438,7 +438,7 @@ Content-Type: application/json
 - For `MD` and `TZ`, confirm the result by the resulting effect. Do not rely on those fields as guaranteed direct echo values.
 - For normal monitoring, `2s ~ 5s` polling is usually reasonable. For short-term write confirmation, `1s ~ 2s` can be used temporarily.
 - Avoid mixing unrelated actions in the same `/write` request, especially `RT` together with configuration updates.
-- If a Home Assistant zero feed-in automation blueprint controls the device, keep the device's local zero feed-in / Local Self-Consumption Mode (`MM`) disabled. The blueprint follows Home Assistant meter entities and Home Assistant automation logic, while `MM` + `MD` lets the device read the configured local meter directly.
-- Use only one zero feed-in control path at a time. Device-local `MM` + `MD` and the Home Assistant blueprint are separate control paths. In the SunEnergyXT app, Smart Strategy - Local Network (WLAN) configures the same device-local self-consumption path.
+- If a Home Assistant zero feed-in automation blueprint controls the device, keep the device's `Local Zero Feed-in mode` (`MM`) disabled. The blueprint follows Home Assistant meter entities and Home Assistant automation logic, while `MM` + `MD` lets the device read the configured local meter directly.
+- Use only one zero feed-in control path at a time. Device-local `MM` + `MD` and the Home Assistant blueprint are separate control paths. In the SunEnergyXT app, Smart Strategy - Local Network (WLAN) configures the same device-local zero feed-in path.
 - Device-local `MM` + `MD` supports only the meter categories documented in Section 5. Meters that are only available as Home Assistant entities should use the Home Assistant blueprint instead.
 - If you need to support multiple firmware branches, implement only against the stable core fields defined in this document. Do not assume undocumented fields are always present.

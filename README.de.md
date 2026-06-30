@@ -20,7 +20,7 @@ Die vollstaendige Referenz der lokalen API, Beispiele fuer `MD`-Zaehlerverbindun
 - Automatische Geraeteerkennung ueber Zeroconf oder manuelles Hinzufuegen per IP-Adresse
 - Ueberwachung von PV-Eingang, Netzanschlussleistung, Lastanschlussleistung, Batteriestand, Firmware-Versionen und weiteren Echtzeitdaten
 - Anpassung haeufig genutzter Einstellungen wie `GS`, `IS`, `MG`, `SI`, `SA`, `SO` und `PT`
-- Konfiguration von lokalem Modus, `MM` Lokaler Eigenverbrauch, `MD` lokale Smart-Meter-Verbindung, `LFB` Lastprioritaet, `LPS` Inselausgang und dem Zeitzonenfeld `TZ`
+- Konfiguration von lokalem Modus, `MM` Lokaler Nulleinspeisemodus, `MD` lokale Smart-Meter-Verbindung, `LFB` Lastprioritaet, `LPS` Inselausgang und dem Zeitzonenfeld `TZ`
 - Neustart des Geraets direkt aus Home Assistant
 
 ## Installation
@@ -85,16 +85,16 @@ Verwenden Sie immer nur einen Regelpfad fuer Nulleinspeisung gleichzeitig. Wenn 
 
 | Modus | Wo die Regelung laeuft | Zaehlerquelle | Wann verwenden |
 |-------|------------------------|---------------|----------------|
-| Geraeteinterner lokaler Eigenverbrauch (`MM` + `MD`) | In der Firmware des SunEnergyXT-Geraets | Direkt im Geraet ueber `MD` konfigurierter Zaehler | Verwenden, wenn der Zaehler zu den dokumentierten geraeteinternen Zaehlerarten gehoert und das Geraet den Zaehler direkt auslesen soll |
+| Geraeteinterner lokaler Nulleinspeisemodus (`MM` + `MD`) | In der Firmware des SunEnergyXT-Geraets | Direkt im Geraet ueber `MD` konfigurierter Zaehler | Verwenden, wenn der Zaehler zu den dokumentierten geraeteinternen Zaehlerarten gehoert und das Geraet den Zaehler direkt auslesen soll |
 | Home-Assistant-Nulleinspeisungs-Blueprint | In der Home-Assistant-Automatisierung | Home-Assistant-Zaehlerentitaeten | Verwenden, wenn der Zaehler bereits in Home Assistant verfuegbar ist oder wenn eigene Zaehlerformeln, eigene Logik oder eine besser nachvollziehbare Regelung benoetigt werden |
 
-Der geraeteinterne lokale Eigenverbrauch unterstuetzt aktuell nur die in [API.md](API.md) dokumentierten Zaehlerkategorien, z. B. Shelly 3EM, Shelly Pro 3EM, EcoTracker und Tasmota / BitShake. Andere Zaehler werden vom geraeteinternen Modus nicht automatisch unterstuetzt, ausser sie werden dem Geraet in einem dieser dokumentierten Formate bereitgestellt.
+Der geraeteinterne lokale Nulleinspeisemodus unterstuetzt aktuell nur die in [API.md](API.md) dokumentierten Zaehlerkategorien, z. B. Shelly 3EM, Shelly Pro 3EM, EcoTracker und Tasmota / BitShake. Andere Zaehler werden vom geraeteinternen Modus nicht automatisch unterstuetzt, ausser sie werden dem Geraet in einem dieser dokumentierten Formate bereitgestellt.
 
-In der SunEnergyXT App ist **Smarte Strategie - Lokales Netzwerk (WLAN)** der App-seitige Einrichtungsweg fuer dieselbe geraeteinterne Funktion `Lokaler Eigenverbrauch`.
+In der SunEnergyXT App ist **Smarte Strategie - Lokales Netzwerk (WLAN)** der App-seitige Einrichtungsweg fuer dieselbe geraeteinterne Funktion, die in der Home-Assistant-Integration als `Lokaler Nulleinspeisemodus` (`MM`) erscheint.
 
 Die offizielle Home-Assistant-Blueprint wird separat gepflegt: [SunEnergyXT Nulleinspeisungs-Blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). Wenn diese Blueprint verwendet wird, sollte `MM` deaktiviert bleiben, weil die Blueprint das Geraet ueber Home-Assistant-Entitaeten steuert und nicht den direkten lokalen Zaehlerlesepfad des Geraets nutzt.
 
-Um den geraeteinternen lokalen Pfad aus Home Assistant zu verwenden, oeffnen Sie das SunEnergyXT-Geraet in Home Assistant und bearbeiten Sie die Textentitaet `Lokale Smart-Meter-Verbindung` (`MD`) mit dem finalen Zaehler-JSON aus [API.md](API.md). Aktivieren Sie danach `Lokaler Eigenverbrauch` (`MM`). Die `MD`-Entitaet ist ein Schreibfeld fuer die geraeteinterne lokale Zaehlerverbindung, aber kein garantiertes Ruecklesefeld. Bestaetigen Sie das Ergebnis ueber `Zaehlerstatus` (`MS`) und das reale Zaehlerverhalten.
+Um den geraeteinternen lokalen Pfad aus Home Assistant zu verwenden, oeffnen Sie das SunEnergyXT-Geraet in Home Assistant und bearbeiten Sie die Textentitaet `Lokale Smart-Meter-Verbindung` (`MD`) mit dem finalen Zaehler-JSON aus [API.md](API.md). Aktivieren Sie danach `Lokaler Nulleinspeisemodus` (`MM`). Die `MD`-Entitaet ist ein Schreibfeld fuer die geraeteinterne lokale Zaehlerverbindung, aber kein garantiertes Ruecklesefeld. Bestaetigen Sie das Ergebnis ueber `Zaehlerstatus` (`MS`) und das reale Zaehlerverhalten.
 
 ## Entitaetsbeschreibung
 
@@ -169,7 +169,7 @@ Hinweise:
 | Entitaets-ID | Name | Beschreibung |
 |--------------|------|--------------|
 | `LM` | Lokaler Modus | Schalter fuer den lokalen Modus. Wenn aktiv, priorisiert das Geraet die lokale Konfiguration |
-| `MM` | Lokaler Eigenverbrauch | Schalter fuer den Modus "Lokaler Eigenverbrauch". Vor dem Aktivieren sollte eine gueltige `MD`-Smart-Meter-Verbindung hinterlegt werden. Beim Ausschalten wird `MD` ebenfalls geleert |
+| `MM` | Lokaler Nulleinspeisemodus | Schalter fuer den Modus "Lokaler Nulleinspeisemodus". Vor dem Aktivieren sollte eine gueltige `MD`-Smart-Meter-Verbindung hinterlegt werden. Beim Ausschalten wird `MD` ebenfalls geleert |
 | `PM` | Parallelschaltmodus des Systems | Schalter fuer den Parallelbetrieb. Nur verwenden, wenn Geraetetopologie und Firmware dies unterstuetzen |
 | `LFB` | Schalter fuer Lastprioritaet | Schalter fuer Lastprioritaet |
 | `LPS` | Schalter fuer den Inselausgang | Schalter fuer den Inselausgang |
@@ -178,7 +178,7 @@ Hinweise:
 
 | Entitaets-ID | Name | Beschreibung |
 |--------------|------|--------------|
-| `MD` | Lokale Smart-Meter-Verbindung | JSON-Zeichenkette fuer die lokale Smart-Meter-Verbindung im Modus "Lokaler Eigenverbrauch". Es muss exakt der finale geraeteseitige Wert aus [API.md](API.md) verwendet werden. Die Einstellung wirkt direkt, ist aber kein garantiertes Ruecklesefeld |
+| `MD` | Lokale Smart-Meter-Verbindung | JSON-Zeichenkette fuer die lokale Smart-Meter-Verbindung im Modus "Lokaler Nulleinspeisemodus". Es muss exakt der finale geraeteseitige Wert aus [API.md](API.md) verwendet werden. Die Einstellung wirkt direkt, ist aber kein garantiertes Ruecklesefeld |
 | `TZ` | Systemzeitzone | POSIX-Zeitzonenstring. Fuer China kann z. B. `CST-8` verwendet werden; fuer Deutschland mit Sommerzeit z. B. `CET-1CEST,M3.5.0,M10.5.0/3`. Die Einstellung wirkt direkt, ist aber kein garantiertes Ruecklesefeld |
 
 ### Button
@@ -202,7 +202,7 @@ Hinweise:
 - Pruefen Sie, ob `http://geraete-ip/read` direkt erreichbar ist
 - Bestaetigen Sie nach einer Aenderung den finalen Zustand stets durch erneutes Auslesen
 
-### Lokaler Eigenverbrauch funktioniert nicht
+### Lokaler Nulleinspeisemodus funktioniert nicht
 
 - Stellen Sie sicher, dass `MD` exakt dem Zaehlerbeispiel in [API.md](API.md) entspricht
 - Stellen Sie sicher, dass `MM` aktiviert ist
@@ -212,7 +212,7 @@ Hinweise:
 
 ### Nutzung der Home-Assistant-Nulleinspeisungs-Blueprint
 
-- Wenn Sie die Home-Assistant-Automatisierungs-Blueprint fuer Nulleinspeisung verwenden, deaktivieren Sie die lokale Nulleinspeisung bzw. den lokalen Eigenverbrauchsmodus (`MM`) des Geraets
+- Wenn Sie die Home-Assistant-Automatisierungs-Blueprint fuer Nulleinspeisung verwenden, deaktivieren Sie den `Lokaler Nulleinspeisemodus` (`MM`) des Geraets
 - Die Blueprint arbeitet mit Home-Assistant-Zaehlerentitaeten und Home-Assistant-Automatisierungslogik; sie nutzt nicht den direkten lokalen Zaehlerlesepfad des Geraets
 - Wenn Sie die geraeteeigene lokale Nulleinspeisungsfunktion verwenden moechten, konfigurieren Sie stattdessen die Zaehlerverbindung im Geraet. In diesem Modus muss der Zaehler nicht ueber Home Assistant verbunden sein
 - Wenn Ihr Zaehler vom geraeteinternen `MM` + `MD`-Modus nicht unterstuetzt wird, aber in Home Assistant als Leistungsentitaet verfuegbar ist, verwenden Sie stattdessen die Blueprint

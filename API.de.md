@@ -15,7 +15,7 @@ Dieses Dokument richtet sich an Integrationen im lokalen Netzwerk und beschreibt
 - `ES / AS / DS / BS0..BS5` sind Firmware-Versionsfelder und keine generischen Statusmeldungen.
 - `BP` ist das dokumentierte Feld fuer die Batterieleistung.
 - `GD1 / GD2 / LD` sind rohe Tagesenergiezaehler in `Wh`, nicht in `kWh`.
-- `MM` ist der Schalter fuer den lokalen Eigenverbrauchsmodus, und `MD` ist die Zaehlerverbindungs-Zeichenkette, die dieser Modus verwendet.
+- `MM` ist der Schalter fuer den lokalen Nulleinspeisemodus, und `MD` ist die Zaehlerverbindungs-Zeichenkette, die dieser Modus verwendet.
 - `TZ` ist ein POSIX-Zeitzonenfeld und kein Landes- oder Regionsname. Fuer Deutschland sollte eine POSIX-Zeitzone mit Sommerzeitregel verwendet werden, zum Beispiel `CET-1CEST,M3.5.0,M10.5.0/3`.
 - `MD` und `TZ` wirken direkt nach dem Schreiben, aber das Geraet gibt den exakt geschriebenen Wert moeglicherweise nicht zurueck.
 
@@ -138,7 +138,7 @@ Schreibregeln:
 | `SA` | `integer` | Ja | Maximaler Lade-SOC im Netzbetrieb. | Empfohlene Werte: `70`, `80`, `90` oder `100`. |
 | `SO` | `integer` | Ja | Minimaler Entlade-SOC im Inselbetrieb. | Empfohlene Werte: `1`, `10` oder `20`. |
 | `LM` | `integer` | Ja | Schalter fuer den lokalen Modus. `0 = aus`, `1 = ein`. | Sobald der lokale Modus aktiviert ist, ist zu erwarten, dass die meisten Cloud-Fernsteuerungen blockiert bleiben, bis der lokale Modus wieder deaktiviert wird. |
-| `MM` | `integer` | Ja | Schalter fuer den lokalen Eigenverbrauchsmodus. `0 = aus`, `1 = ein`. | Am sichersten ist es, zuerst ein gueltiges `MD` vorzubereiten oder `MM = 1` zusammen mit `MD` in derselben Anfrage zu senden. Die Home-Assistant-Integration leert `MD`, wenn `MM` ausgeschaltet wird. Den finalen Zaehlerstatus ueber `MS` bestaetigen. |
+| `MM` | `integer` | Ja | Schalter fuer den lokalen Nulleinspeisemodus. `0 = aus`, `1 = ein`. | Am sichersten ist es, zuerst ein gueltiges `MD` vorzubereiten oder `MM = 1` zusammen mit `MD` in derselben Anfrage zu senden. Die Home-Assistant-Integration leert `MD`, wenn `MM` ausgeschaltet wird. Den finalen Zaehlerstatus ueber `MS` bestaetigen. |
 | `LFB` | `integer` | Ja | Schalter fuer Lastprioritaet. `0 = aus`, `1 = ein`. | Nur verwenden, wenn die Geraetefirmware Lastprioritaet unterstuetzt. |
 | `LPS` | `integer` | Ja | Schalter fuer den Inselausgang. `0 = aus`, `1 = ein`. | Nur verwenden, wenn die Geraetefirmware die Steuerung des Inselausgangs unterstuetzt. |
 | `MD` | `string` | Wirkt direkt | JSON-Zeichenkette fuer die lokale Zaehlerverbindung. | Fuellen Sie `MD` mit dem finalen geraeteseitigen JSON-Zeichenketteninhalt aus Abschnitt 5. Die Einstellung wirkt direkt, aber das Geraet gibt den geschriebenen `MD`-Wert moeglicherweise nicht zurueck. Bestaetigen Sie das Ergebnis ueber `MS` und die echten Zaehlerdaten. |
@@ -194,7 +194,7 @@ Bedeutung der Felder:
 
 ### 5.2 Unterstuetzte Zaehlerkategorien
 
-Das Geraet unterstuetzt aktuell die folgenden vier Zaehlerkategorien fuer den lokalen Eigenverbrauchsmodus:
+Das Geraet unterstuetzt aktuell die folgenden vier Zaehlerkategorien fuer den lokalen Nulleinspeisemodus:
 
 | Zaehlertyp | Finales `mode` | Finale Verbindungsfelder | Finales `dat_str.pwr` | Ausfuellhinweise |
 | --- | --- | --- | --- | --- |
@@ -308,7 +308,7 @@ Die folgende Tabelle enthaelt alle aktuell verfuegbaren BitShake-/Tasmota-Werte 
 | `Smarty` | `power` |
 | `SML` | `Power` |
 
-Wenn der aktuelle Zaehler-Subtyp nicht in der obigen Liste aufgefuehrt ist, sollte fuer diesen Tasmota-Zaehler kein `MD` gesetzt werden. Andernfalls kann das Geraet den Zaehler im lokalen Eigenverbrauchsmodus nicht korrekt auslesen.
+Wenn der aktuelle Zaehler-Subtyp nicht in der obigen Liste aufgefuehrt ist, sollte fuer diesen Tasmota-Zaehler kein `MD` gesetzt werden. Andernfalls kann das Geraet den Zaehler im lokalen Nulleinspeisemodus nicht korrekt auslesen.
 
 ## 6. Stabil gemeldete Felder
 
@@ -338,7 +338,7 @@ Wenn der aktuelle Zaehler-Subtyp nicht in der obigen Liste aufgefuehrt ist, soll
 | `IS` | `integer` | Ruecklesewert der aktuellen maximalen Netzeinspeisegrenze | Die Obergrenze haengt vom Modell ab |
 | `SI / SA / SO` | `integer` | SOC-Grenzwerte | `SI1 / SA1` sind reservierte Felder und sollten nicht standardmaessig angenommen werden |
 | `LM` | `integer` | Status des lokalen Modus | `0 = aus`, `1 = ein` |
-| `MM` | `integer` | Status des lokalen Eigenverbrauchsmodus | `0 = aus`, `1 = ein` |
+| `MM` | `integer` | Status des lokalen Nulleinspeisemodus | `0 = aus`, `1 = ein` |
 | `MD` | `string` | Laufzeitwert der Zaehlerverbindung, wenn vorhanden | Nicht als garantiertes Echo des zuletzt geschriebenen `MD` verwenden |
 | `MS` | `integer` | Zaehlerstatus | Aktuell bekannte Werte: `0 = kein Zaehler gebunden`, `1 = online`, `2 = offline`, `3 = IP-Anfrage laeuft` |
 | `IP` | `string` | IP-Adresse des lokalen Modus | Vom Geraet gemeldet |
@@ -403,7 +403,7 @@ Content-Type: application/json
 
 Die Einstellung wirkt direkt, aber das Geraet gibt moeglicherweise nicht denselben `TZ`-Wert zurueck.
 
-### 7.5 Lokalen Eigenverbrauchsmodus mit Shelly Pro 3EM aktivieren
+### 7.5 Lokalen Nulleinspeisemodus mit Shelly Pro 3EM aktivieren
 
 ```http
 POST http://192.168.1.102/write
@@ -438,7 +438,7 @@ Content-Type: application/json
 - Bestaetigen Sie `MD` und `TZ` ueber ihre Wirkung. Verlassen Sie sich bei diesen Feldern nicht auf ein garantiertes direktes Echo.
 - Fuer normales Monitoring ist ein Polling-Intervall von `2s ~ 5s` in der Regel angemessen. Fuer die kurzzeitige Schreibbestaetigung koennen temporaer `1s ~ 2s` verwendet werden.
 - Vermeiden Sie es, nicht zusammengehoerige Aktionen in derselben `/write`-Anfrage zu mischen, insbesondere `RT` zusammen mit Konfigurationsaenderungen.
-- Wenn eine Home-Assistant-Automatisierungs-Blueprint die Nulleinspeisung steuert, sollte die lokale Nulleinspeisung bzw. der lokale Eigenverbrauchsmodus (`MM`) des Geraets deaktiviert bleiben. Die Blueprint arbeitet mit Home-Assistant-Zaehlerentitaeten und Home-Assistant-Automatisierungslogik; `MM` + `MD` laesst dagegen das Geraet den konfigurierten lokalen Zaehler direkt auslesen.
-- Verwenden Sie immer nur einen Regelpfad fuer Nulleinspeisung gleichzeitig. Geraeteinternes `MM` + `MD` und die Home-Assistant-Blueprint sind getrennte Regelpfade. In der SunEnergyXT App konfiguriert Smarte Strategie - Lokales Netzwerk (WLAN) denselben geraeteinternen lokalen Eigenverbrauchspfad.
+- Wenn eine Home-Assistant-Automatisierungs-Blueprint die Nulleinspeisung steuert, sollte der `Lokaler Nulleinspeisemodus` (`MM`) des Geraets deaktiviert bleiben. Die Blueprint arbeitet mit Home-Assistant-Zaehlerentitaeten und Home-Assistant-Automatisierungslogik; `MM` + `MD` laesst dagegen das Geraet den konfigurierten lokalen Zaehler direkt auslesen.
+- Verwenden Sie immer nur einen Regelpfad fuer Nulleinspeisung gleichzeitig. Geraeteinternes `MM` + `MD` und die Home-Assistant-Blueprint sind getrennte Regelpfade. In der SunEnergyXT App konfiguriert Smarte Strategie - Lokales Netzwerk (WLAN) denselben geraeteinternen lokalen Nulleinspeisungspfad.
 - Geraeteinternes `MM` + `MD` unterstuetzt nur die in Abschnitt 5 dokumentierten Zaehlerkategorien. Zaehler, die nur als Home-Assistant-Entitaeten verfuegbar sind, sollten stattdessen ueber die Home-Assistant-Blueprint verwendet werden.
 - Wenn mehrere Firmware-Zweige unterstuetzt werden muessen, sollte die Integration nur auf den in diesem Dokument definierten stabilen Kernfeldern aufbauen. Gehen Sie nicht davon aus, dass undokumentierte Felder immer vorhanden sind.
