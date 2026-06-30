@@ -79,6 +79,22 @@ Usage notes:
 - If you rely on automatic discovery, make sure the network allows mDNS / Zeroconf traffic
 - After changing a control item, wait for the next polling cycle or read the status again to confirm the final value
 
+## Zero Feed-in Mode Selection
+
+Use only one zero feed-in control path at a time. Mixing the device's local meter control, the Home Assistant blueprint, and App/cloud control can make the resulting behavior difficult to predict.
+
+| Mode | Where control runs | Meter source | When to use it |
+|------|--------------------|--------------|----------------|
+| Device local self-consumption (`MM` + `MD`) | On the SunEnergyXT device firmware | A meter configured directly in the device through `MD` | Use this when your meter is one of the documented device-local meter types and you want the device to read the meter directly |
+| Home Assistant zero feed-in blueprint | In Home Assistant automation | Home Assistant meter entities | Use this when the meter is already available in Home Assistant, or when you need custom meter formulas, custom logic, or easier inspection of the control behavior |
+| App/cloud zero feed-in | SunEnergyXT App/cloud path | App/cloud configured meter path | Use this only when you intentionally want the App/cloud control path |
+
+Device local self-consumption currently supports only the meter categories documented in [API.md](API.md), such as Shelly 3EM, Shelly Pro 3EM, EcoTracker, and Tasmota / BitShake. Other meters are not automatically supported by the device-local mode unless they are exposed to the device in one of those documented formats.
+
+The official Home Assistant blueprint is maintained separately: [SunEnergyXT zero feed-in blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). When using the blueprint, keep `MM` disabled because the blueprint controls the device from Home Assistant entities instead of using the device's direct local meter-reading path.
+
+To use the device-local path from Home Assistant, open the SunEnergyXT device in Home Assistant and edit the `Local Meter Connection Settings` text entity (`MD`) with the final meter JSON from [API.md](API.md). Then enable `Local Self-Consumption Mode` (`MM`). The `MD` entity is a write field for the device-local meter connection, not a guaranteed readback field; confirm the result through `Meter Status` (`MS`) and live meter behavior.
+
 ## Entity Description
 
 Notes:
@@ -190,6 +206,7 @@ Notes:
 - Make sure `MD` follows the exact meter-type example shown in [API.md](API.md)
 - Make sure `MM` is enabled
 - Check whether `MS` reports an online meter status and whether live meter data is updating
+- Make sure the meter is one of the device-local meter categories documented in [API.md](API.md)
 - Do not rely on `MD` itself as a guaranteed echo after writing
 
 ### Using the Home Assistant Zero Feed-in Blueprint
@@ -197,6 +214,7 @@ Notes:
 - If you use the Home Assistant zero feed-in automation blueprint, disable the device's local zero feed-in / Local Self-Consumption Mode (`MM`)
 - The blueprint uses Home Assistant meter entities and Home Assistant automation logic; it does not use the device's direct local meter-reading path
 - If you prefer the device's built-in local zero feed-in function, configure the meter connection on the device side instead. In that mode, the meter does not need to be connected through Home Assistant
+- If your meter is not supported by the device-local `MM` + `MD` mode but is available as a Home Assistant power entity, use the blueprint path instead
 
 ### Timezone Setting Is Incorrect
 

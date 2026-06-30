@@ -79,6 +79,22 @@ Hinweise zur Nutzung:
 - Wenn Sie die automatische Erkennung nutzen moechten, muss das Netzwerk mDNS / Zeroconf zulassen
 - Nach dem Aendern eines Steuerwerts sollte der finale Zustand durch die naechste Aktualisierung oder ein erneutes Auslesen bestaetigt werden
 
+## Auswahl des Nulleinspeisungsmodus
+
+Verwenden Sie immer nur einen Regelpfad fuer Nulleinspeisung gleichzeitig. Wenn geraeteinterner lokaler Modus, Home-Assistant-Blueprint und App-/Cloud-Steuerung gleichzeitig gemischt werden, ist das resultierende Verhalten schwer vorhersehbar.
+
+| Modus | Wo die Regelung laeuft | Zaehlerquelle | Wann verwenden |
+|-------|------------------------|---------------|----------------|
+| Geraeteinterner lokaler Eigenverbrauch (`MM` + `MD`) | In der Firmware des SunEnergyXT-Geraets | Direkt im Geraet ueber `MD` konfigurierter Zaehler | Verwenden, wenn der Zaehler zu den dokumentierten geraeteinternen Zaehlerarten gehoert und das Geraet den Zaehler direkt auslesen soll |
+| Home-Assistant-Nulleinspeisungs-Blueprint | In der Home-Assistant-Automatisierung | Home-Assistant-Zaehlerentitaeten | Verwenden, wenn der Zaehler bereits in Home Assistant verfuegbar ist oder wenn eigene Zaehlerformeln, eigene Logik oder eine besser nachvollziehbare Regelung benoetigt werden |
+| App-/Cloud-Nulleinspeisung | SunEnergyXT App-/Cloud-Pfad | In App/Cloud konfigurierter Zaehlerpfad | Nur verwenden, wenn bewusst der App-/Cloud-Regelpfad genutzt werden soll |
+
+Der geraeteinterne lokale Eigenverbrauch unterstuetzt aktuell nur die in [API.md](API.md) dokumentierten Zaehlerkategorien, z. B. Shelly 3EM, Shelly Pro 3EM, EcoTracker und Tasmota / BitShake. Andere Zaehler werden vom geraeteinternen Modus nicht automatisch unterstuetzt, ausser sie werden dem Geraet in einem dieser dokumentierten Formate bereitgestellt.
+
+Die offizielle Home-Assistant-Blueprint wird separat gepflegt: [SunEnergyXT Nulleinspeisungs-Blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). Wenn diese Blueprint verwendet wird, sollte `MM` deaktiviert bleiben, weil die Blueprint das Geraet ueber Home-Assistant-Entitaeten steuert und nicht den direkten lokalen Zaehlerlesepfad des Geraets nutzt.
+
+Um den geraeteinternen lokalen Pfad aus Home Assistant zu verwenden, oeffnen Sie das SunEnergyXT-Geraet in Home Assistant und bearbeiten Sie die Textentitaet `Lokale Smart-Meter-Verbindung` (`MD`) mit dem finalen Zaehler-JSON aus [API.md](API.md). Aktivieren Sie danach `Lokaler Eigenverbrauch` (`MM`). Die `MD`-Entitaet ist ein Schreibfeld fuer die geraeteinterne lokale Zaehlerverbindung, aber kein garantiertes Ruecklesefeld. Bestaetigen Sie das Ergebnis ueber `Zaehlerstatus` (`MS`) und das reale Zaehlerverhalten.
+
 ## Entitaetsbeschreibung
 
 Hinweise:
@@ -190,6 +206,7 @@ Hinweise:
 - Stellen Sie sicher, dass `MD` exakt dem Zaehlerbeispiel in [API.md](API.md) entspricht
 - Stellen Sie sicher, dass `MM` aktiviert ist
 - Pruefen Sie, ob `MS` einen online gemeldeten Zaehler zeigt und ob echte Zaehlerdaten aktualisiert werden
+- Stellen Sie sicher, dass der Zaehler zu den in [API.md](API.md) dokumentierten geraeteinternen Zaehlerkategorien gehoert
 - Verlassen Sie sich nach dem Schreiben nicht auf `MD` als garantiertes Echo
 
 ### Nutzung der Home-Assistant-Nulleinspeisungs-Blueprint
@@ -197,6 +214,7 @@ Hinweise:
 - Wenn Sie die Home-Assistant-Automatisierungs-Blueprint fuer Nulleinspeisung verwenden, deaktivieren Sie die lokale Nulleinspeisung bzw. den lokalen Eigenverbrauchsmodus (`MM`) des Geraets
 - Die Blueprint arbeitet mit Home-Assistant-Zaehlerentitaeten und Home-Assistant-Automatisierungslogik; sie nutzt nicht den direkten lokalen Zaehlerlesepfad des Geraets
 - Wenn Sie die geraeteeigene lokale Nulleinspeisungsfunktion verwenden moechten, konfigurieren Sie stattdessen die Zaehlerverbindung im Geraet. In diesem Modus muss der Zaehler nicht ueber Home Assistant verbunden sein
+- Wenn Ihr Zaehler vom geraeteinternen `MM` + `MD`-Modus nicht unterstuetzt wird, aber in Home Assistant als Leistungsentitaet verfuegbar ist, verwenden Sie stattdessen die Blueprint
 
 ### Zeitzone ist falsch eingestellt
 

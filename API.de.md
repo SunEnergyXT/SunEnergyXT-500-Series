@@ -172,6 +172,7 @@ Ausfuellregeln:
 - Wenn Ihr HTTP-Client einen JSON-Request-Body serialisiert, wird das aeussere Escaping der Zeichenkette meist automatisch uebernommen.
 - Bei `mdns`-Zaehlern muss der Host-Teil in `dat_url` auf `0.0.0.0` bleiben. Er darf nicht manuell durch die echte LAN-IP ersetzt werden.
 - In einigen Clients kann `=` waehrend der Serialisierung als `\u003d` erscheinen. Das ist gleichwertig und kann unveraendert gesendet werden.
+- In Home Assistant wird `MD` als Textentitaet `Lokale Smart-Meter-Verbindung` angezeigt. Sie dient zum Schreiben des Zaehlerverbindungsstrings und kann nach dem Schreiben geleert oder nicht exakt zurueckgemeldet werden. Bestaetigen Sie das Ergebnis ueber `MS` und das reale Zaehlerverhalten.
 
 ### 5.1 Endgueltiges Format des `MD`-Felds
 
@@ -438,4 +439,6 @@ Content-Type: application/json
 - Fuer normales Monitoring ist ein Polling-Intervall von `2s ~ 5s` in der Regel angemessen. Fuer die kurzzeitige Schreibbestaetigung koennen temporaer `1s ~ 2s` verwendet werden.
 - Vermeiden Sie es, nicht zusammengehoerige Aktionen in derselben `/write`-Anfrage zu mischen, insbesondere `RT` zusammen mit Konfigurationsaenderungen.
 - Wenn eine Home-Assistant-Automatisierungs-Blueprint die Nulleinspeisung steuert, sollte die lokale Nulleinspeisung bzw. der lokale Eigenverbrauchsmodus (`MM`) des Geraets deaktiviert bleiben. Die Blueprint arbeitet mit Home-Assistant-Zaehlerentitaeten und Home-Assistant-Automatisierungslogik; `MM` + `MD` laesst dagegen das Geraet den konfigurierten lokalen Zaehler direkt auslesen.
+- Verwenden Sie immer nur einen Regelpfad fuer Nulleinspeisung gleichzeitig. Geraeteinternes `MM` + `MD`, die Home-Assistant-Blueprint und App-/Cloud-Nulleinspeisung sind getrennte Regelpfade.
+- Geraeteinternes `MM` + `MD` unterstuetzt nur die in Abschnitt 5 dokumentierten Zaehlerkategorien. Zaehler, die nur als Home-Assistant-Entitaeten verfuegbar sind, sollten stattdessen ueber die Home-Assistant-Blueprint verwendet werden.
 - Wenn mehrere Firmware-Zweige unterstuetzt werden muessen, sollte die Integration nur auf den in diesem Dokument definierten stabilen Kernfeldern aufbauen. Gehen Sie nicht davon aus, dass undokumentierte Felder immer vorhanden sind.

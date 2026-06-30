@@ -172,6 +172,7 @@ Fill rules:
 - When your HTTP client serializes a JSON request body, the outer string escaping is usually handled automatically.
 - For `mdns` meters, the host part inside `dat_url` must remain `0.0.0.0`. Do not replace it with the real LAN IP manually.
 - In some clients, `=` may appear as `\u003d` during serialization. This is equivalent and can be sent as-is.
+- In Home Assistant, `MD` is exposed as the `Local Meter Connection Settings` text entity. It is used for writing the meter connection string and may be cleared or not echoed exactly after a write; verify the result through `MS` and live meter behavior.
 
 ### 5.1 Final `MD` Field Shape
 
@@ -438,4 +439,6 @@ Content-Type: application/json
 - For normal monitoring, `2s ~ 5s` polling is usually reasonable. For short-term write confirmation, `1s ~ 2s` can be used temporarily.
 - Avoid mixing unrelated actions in the same `/write` request, especially `RT` together with configuration updates.
 - If a Home Assistant zero feed-in automation blueprint controls the device, keep the device's local zero feed-in / Local Self-Consumption Mode (`MM`) disabled. The blueprint follows Home Assistant meter entities and Home Assistant automation logic, while `MM` + `MD` lets the device read the configured local meter directly.
+- Use only one zero feed-in control path at a time. Device-local `MM` + `MD`, the Home Assistant blueprint, and App/cloud zero feed-in are separate control paths.
+- Device-local `MM` + `MD` supports only the meter categories documented in Section 5. Meters that are only available as Home Assistant entities should use the Home Assistant blueprint instead.
 - If you need to support multiple firmware branches, implement only against the stable core fields defined in this document. Do not assume undocumented fields are always present.
