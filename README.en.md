@@ -77,6 +77,7 @@ Usage notes:
 
 - Home Assistant and the device must be on the same local network
 - If you rely on automatic discovery, make sure the network allows mDNS / Zeroconf traffic
+- The `Today's PV Generation Energy` (`PD`) sensor requires control module firmware `ES 1.1.4` or later. Older firmware can continue using the integration, but may not report this sensor.
 - After changing a control item, wait for the next polling cycle or read the status again to confirm the final value
 
 ## Zero Feed-in Mode Selection
@@ -129,6 +130,7 @@ Notes:
 | `GP` | System Grid Port Power | W | Grid port power. A positive value usually means export/feed-in; a negative value usually means grid import or grid charging |
 | `LP` | System Load Port Power | W | Current load port power |
 | `BP` | System Battery Power | W | Current battery power. A positive value means charging; a negative value means discharging |
+| `PD` | Today's PV Generation Energy | kWh | Today's accumulated PV generation energy. Requires control module firmware `ES 1.1.4` or later |
 | `GD1` | Today's Grid Charge Energy | kWh | Today's energy charged into the system from the grid |
 | `GD2` | Today's Grid Feed-in Energy | kWh | Today's energy exported to the grid through the grid port |
 | `LD` | Today's Off-grid Output Energy | kWh | Today's off-grid inverter output energy |

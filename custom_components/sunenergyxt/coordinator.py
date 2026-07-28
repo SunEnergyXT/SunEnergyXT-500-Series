@@ -9,7 +9,7 @@ Classes:
 """
 
 import logging
-from datetime import UTC, datetime, timedelta
+from datetime import timedelta
 from http import HTTPStatus
 from typing import Any
 
@@ -75,7 +75,6 @@ class SunlitDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                         msg = "Invalid 'reported' structure in JSON"
                         raise TypeError(msg)
 
-                    self.last_success_time = datetime.now(UTC)
                     _LOGGER.debug("Get raw data: %s", str(data))
                     return reported
         except (aiohttp.ClientConnectorError, TimeoutError, OSError) as err:

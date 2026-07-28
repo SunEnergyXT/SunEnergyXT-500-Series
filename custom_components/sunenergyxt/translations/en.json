@@ -104,6 +104,9 @@
             "bp": {
                 "name": "System Battery Power"
             },
+            "pd": {
+                "name": "Today's PV Generation Energy"
+            },
             "gd1": {
                 "name": "Today's Grid Charge Energy"
             },

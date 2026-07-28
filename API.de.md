@@ -14,7 +14,8 @@ Dieses Dokument richtet sich an Integrationen im lokalen Netzwerk und beschreibt
 - `MS` bedeutet Zaehlerstatus, nicht Hersteller.
 - `ES / AS / DS / BS0..BS5` sind Firmware-Versionsfelder und keine generischen Statusmeldungen.
 - `BP` ist das dokumentierte Feld fuer die Batterieleistung.
-- `GD1 / GD2 / LD` sind rohe Tagesenergiezaehler in `Wh`, nicht in `kWh`.
+- `PD / GD1 / GD2 / LD` sind rohe Tagesenergiezaehler in `Wh`, nicht in `kWh`.
+- `PD` erfordert die Steuerungsmodul-Firmware `ES 1.1.4` oder neuer. Aeltere Firmware kann dieses optionale Feld auslassen.
 - `MM` ist der Schalter fuer den lokalen Nulleinspeisemodus, und `MD` ist die Zaehlerverbindungs-Zeichenkette, die dieser Modus verwendet.
 - `TZ` ist ein POSIX-Zeitzonenfeld und kein Landes- oder Regionsname. Fuer Deutschland sollte eine POSIX-Zeitzone mit Sommerzeitregel verwendet werden, zum Beispiel `CET-1CEST,M3.5.0,M10.5.0/3`.
 - `MD` und `TZ` wirken direkt nach dem Schreiben, aber das Geraet gibt den exakt geschriebenen Wert moeglicherweise nicht zurueck.
@@ -79,6 +80,7 @@ Beispiel fuer die stabile Antwortstruktur:
       "BP": 1450,
       "SC": 54,
       "SC0": 54,
+      "PD": 6230,
       "GD1": 5683,
       "GD2": 4789,
       "LD": 0,
@@ -331,6 +333,7 @@ Wenn der aktuelle Zaehler-Subtyp nicht in der obigen Liste aufgefuehrt ist, soll
 | `SC0..SC5` | `number` | SOC-Werte von Master- und Slave-Batterien | `SC0` ist die Master-Batterie, `SC1..SC5` sind Slaves |
 | `BN` | `integer` | Gesamtanzahl der Batteriepacks | Nützlich fuer die Erkennung der Topologie |
 | `ON` | `integer` | Anzahl der online befindlichen Batteriepacks | Nützlich fuer die Erkennung von Mehrpack-Systemen |
+| `PD` | `number` | Taegliche PV-Erzeugungsenergie | Rohwert in `Wh`; erfordert die Steuerungsmodul-Firmware `ES 1.1.4` oder neuer |
 | `GD1` | `number` | Taegliche Netzladeenergie | Rohwert in `Wh` |
 | `GD2` | `number` | Taegliche Netzeinspeiseenergie | Rohwert in `Wh` |
 | `LD` | `number` | Taegliche Inselbetriebs-Lastenergie | Rohwert in `Wh` |

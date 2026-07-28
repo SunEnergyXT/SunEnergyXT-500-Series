@@ -77,6 +77,7 @@ Hinweise zur Nutzung:
 
 - Home Assistant und das Geraet muessen sich im selben lokalen Netzwerk befinden
 - Wenn Sie die automatische Erkennung nutzen moechten, muss das Netzwerk mDNS / Zeroconf zulassen
+- Der Sensor `Heutige PV-Erzeugung` (`PD`) erfordert die Steuerungsmodul-Firmware `ES 1.1.4` oder neuer. Mit aelterer Firmware kann die Integration weiterhin verwendet werden, der Sensor wird jedoch moeglicherweise nicht gemeldet.
 - Nach dem Aendern eines Steuerwerts sollte der finale Zustand durch die naechste Aktualisierung oder ein erneutes Auslesen bestaetigt werden
 
 ## Auswahl des Nulleinspeisungsmodus
@@ -129,6 +130,7 @@ Hinweise:
 | `GP` | Systemleistung am Netzanschluss | W | Leistung am Netzanschluss. Positive Werte bedeuten in der Regel Einspeisung, negative Werte in der Regel Netzbezug oder Netzladen |
 | `LP` | Systemleistung am Lastanschluss | W | Aktuelle Leistung am Lastanschluss |
 | `BP` | System-Batterieleistung | W | Aktuelle Batterieleistung. Positive Werte bedeuten Laden, negative Werte bedeuten Entladen |
+| `PD` | Heutige PV-Erzeugung | kWh | Heute erzeugte PV-Energie. Erfordert die Steuerungsmodul-Firmware `ES 1.1.4` oder neuer |
 | `GD1` | Heutige Netzladung | kWh | Energie, die heute aus dem Netz in das System geladen wurde |
 | `GD2` | Heutige Netzeinspeisung | kWh | Energie, die heute ueber den Netzanschluss ins Netz eingespeist wurde |
 | `LD` | Heutige Off-Grid-Ausgabe | kWh | Heute abgegebene Off-Grid-Ausgangsenergie |

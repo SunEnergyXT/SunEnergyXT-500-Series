@@ -184,6 +184,15 @@ SENSOR_META: dict[str, dict[str, Any]] = {
         "state_class": SensorStateClass.MEASUREMENT,
         "icon": "mdi:battery-charging",
     },
+    "PD": {
+        "unit": "kWh",
+        "scale": 0.001,
+        "precision": 3,
+        "entity_category": EntityCategory.DIAGNOSTIC,
+        "device_class": SensorDeviceClass.ENERGY,
+        "state_class": SensorStateClass.TOTAL_INCREASING,
+        "icon": "mdi:solar-power",
+    },
     "GD1": {
         "unit": "kWh",
         "scale": 0.001,
@@ -363,6 +372,7 @@ async def async_setup_entry(
         "GP",
         "LP",
         "BP",
+        "PD",
         "GD1",
         "GD2",
         "LD",
@@ -483,17 +493,3 @@ class SunlitSensor(
             return round(val, self._precision) if self._precision is not None else val
         except (TypeError, ValueError):
             return raw
-
-    @property
-    def extra_state_attributes(self) -> Any:
-        """
-        Get extra state attributes for the sensor entity.
-
-        Returns:
-            Dictionary of extra state attributes
-
-        """
-        attrs = {}
-        if self.coordinator.last_success_time:
-            attrs["last_report_time"] = self.coordinator.last_success_time.isoformat()
-        return attrs

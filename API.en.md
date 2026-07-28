@@ -14,7 +14,8 @@ This document is for LAN-side integrations and describes the currently supported
 - `MS` means meter status, not manufacturer.
 - `ES / AS / DS / BS0..BS5` are firmware version fields, not generic status strings.
 - `BP` is the documented battery power field.
-- `GD1 / GD2 / LD` are raw daily energy counters in `Wh`, not `kWh`.
+- `PD / GD1 / GD2 / LD` are raw daily energy counters in `Wh`, not `kWh`.
+- `PD` requires control module firmware `ES 1.1.4` or later. Older firmware may omit this optional field.
 - `MM` is the Local Zero Feed-in mode switch, and `MD` is the meter connection string used by that mode.
 - `TZ` is a POSIX timezone field, not a country or region name. Germany should use a DST-aware POSIX timezone string such as `CET-1CEST,M3.5.0,M10.5.0/3`.
 - `MD` and `TZ` take effect immediately after a write, but the device may not echo the exact written value back.
@@ -79,6 +80,7 @@ Stable response shape example:
       "BP": 1450,
       "SC": 54,
       "SC0": 54,
+      "PD": 6230,
       "GD1": 5683,
       "GD2": 4789,
       "LD": 0,
@@ -331,6 +333,7 @@ If the current meter subtype is not listed above, do not fill `MD` for that Tasm
 | `SC0..SC5` | `number` | Master and slave battery SOC values | `SC0` is the master battery, `SC1..SC5` are slaves |
 | `BN` | `integer` | Total battery pack count | Useful for topology awareness |
 | `ON` | `integer` | Online battery pack count | Useful for multi-pack awareness |
+| `PD` | `number` | Daily PV generation energy | Raw unit `Wh`; requires control module firmware `ES 1.1.4` or later |
 | `GD1` | `number` | Daily grid charging energy | Raw unit `Wh` |
 | `GD2` | `number` | Daily grid export energy | Raw unit `Wh` |
 | `LD` | `number` | Daily off-grid load output energy | Raw unit `Wh` |

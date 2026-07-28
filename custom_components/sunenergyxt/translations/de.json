@@ -104,6 +104,9 @@
             "bp": {
                 "name": "System-Batterieleistung"
             },
+            "pd": {
+                "name": "Heutige PV-Erzeugung"
+            },
             "gd1": {
                 "name": "Heutige Netzladung"
             },
