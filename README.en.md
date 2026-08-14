@@ -20,7 +20,7 @@ For the complete local API field reference, `MD` meter connection string example
 - Discover devices automatically via Zeroconf, or add a device manually by IP address
 - Monitor PV input, grid port power, load port power, battery level, firmware versions, and other real-time data
 - Adjust common settings such as `GS`, `IS`, `MG`, `SI`, `SA`, `SO`, and `PT`
-- Configure Local Mode, `MM` Local Zero Feed-in mode, `MD` local meter connection settings, `LFB` load priority, `LPS` off-grid output, and the `TZ` timezone field
+- Configure Local Mode, `MM` Local Zero Feed-in mode, `MD` Local Meter Data Format, `LFB` load priority, `LPS` off-grid output, and the `TZ` timezone field
 - Restart the device from Home Assistant
 
 ## Installation
@@ -95,7 +95,7 @@ In the SunEnergyXT app, **Smart Strategy - Local Network (WLAN)** is the app-sid
 
 The official Home Assistant blueprint is maintained separately: [SunEnergyXT zero feed-in blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). When using the blueprint, keep `MM` disabled because the blueprint controls the device from Home Assistant entities instead of using the device's direct local meter-reading path.
 
-To use the device-local path from Home Assistant, open the SunEnergyXT device in Home Assistant and edit the `Local Meter Connection Settings` text entity (`MD`) with the final meter JSON from [API.md](API.md). Then enable `Local Zero Feed-in mode` (`MM`). The `MD` entity is a write field for the device-local meter connection, not a guaranteed readback field; confirm the result through `Meter Status` (`MS`) and live meter behavior.
+To use the device-local path from Home Assistant, open the SunEnergyXT device in Home Assistant and edit the `Local Meter Data Format` text entity (`MD`) with the final meter JSON from [API.md](API.md). Then enable `Local Zero Feed-in mode` (`MM`). In the current integration, `Local Meter Data Format` is the visible Home Assistant name of the `MD` meter connection field. It is a write field, not a guaranteed readback field; confirm the result through `Meter Status` (`MS`) and live meter behavior.
 
 ## Entity Description
 
@@ -180,7 +180,7 @@ Notes:
 
 | Entity ID | Name | Description |
 |-----------|------|-------------|
-| `MD` | Local Meter Connection Settings | Local meter connection JSON string for Local Zero Feed-in mode. Fill in the exact final device-side value shown in [API.md](API.md). It takes effect directly, but should not be used as a guaranteed readback field |
+| `MD` | Local Meter Data Format | Local meter connection JSON string for Local Zero Feed-in mode. Fill in the exact final device-side value shown in [API.md](API.md). It takes effect directly, but should not be used as a guaranteed readback field |
 | `TZ` | System Time Zone | POSIX timezone string. For example, China can use `CST-8`; Germany with DST can use `CET-1CEST,M3.5.0,M10.5.0/3`. It takes effect directly, but should not be used as a guaranteed readback field |
 
 ### Button

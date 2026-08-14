@@ -20,7 +20,7 @@ Die vollstaendige Referenz der lokalen API, Beispiele fuer `MD`-Zaehlerverbindun
 - Automatische Geraeteerkennung ueber Zeroconf oder manuelles Hinzufuegen per IP-Adresse
 - Ueberwachung von PV-Eingang, Netzanschlussleistung, Lastanschlussleistung, Batteriestand, Firmware-Versionen und weiteren Echtzeitdaten
 - Anpassung haeufig genutzter Einstellungen wie `GS`, `IS`, `MG`, `SI`, `SA`, `SO` und `PT`
-- Konfiguration von lokalem Modus, `MM` Lokaler Nulleinspeisemodus, `MD` lokale Smart-Meter-Verbindung, `LFB` Lastprioritaet, `LPS` Inselausgang und dem Zeitzonenfeld `TZ`
+- Konfiguration von lokalem Modus, `MM` Lokaler Nulleinspeisemodus, `MD` Lokales Zhlerdatenformat, `LFB` Lastprioritaet, `LPS` Inselausgang und dem Zeitzonenfeld `TZ`
 - Neustart des Geraets direkt aus Home Assistant
 
 ## Installation
@@ -94,7 +94,7 @@ In der SunEnergyXT App ist **Smarte Strategie - Lokales Netzwerk (WLAN)** der Ap
 
 Die offizielle Home-Assistant-Blueprint wird separat gepflegt: [SunEnergyXT Nulleinspeisungs-Blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). Wenn diese Blueprint verwendet wird, sollte `MM` deaktiviert bleiben, weil die Blueprint das Geraet ueber Home-Assistant-Entitaeten steuert und nicht den direkten lokalen Zaehlerlesepfad des Geraets nutzt.
 
-Um den geraeteinternen lokalen Pfad aus Home Assistant zu verwenden, oeffnen Sie das SunEnergyXT-Geraet in Home Assistant und bearbeiten Sie die Textentitaet `Lokale Smart-Meter-Verbindung` (`MD`) mit dem finalen Zaehler-JSON aus [API.md](API.md). Aktivieren Sie danach `Lokaler Nulleinspeisemodus` (`MM`). Die `MD`-Entitaet ist ein Schreibfeld fuer die geraeteinterne lokale Zaehlerverbindung, aber kein garantiertes Ruecklesefeld. Bestaetigen Sie das Ergebnis ueber `Zaehlerstatus` (`MS`) und das reale Zaehlerverhalten.
+Um den geraeteinternen lokalen Pfad aus Home Assistant zu verwenden, oeffnen Sie das SunEnergyXT-Geraet in Home Assistant und bearbeiten Sie die Textentitaet `Lokales Zhlerdatenformat` (`MD`) mit dem finalen Zaehler-JSON aus [API.md](API.md). In der aktuellen Integration ist `Lokales Zhlerdatenformat` der in Home Assistant sichtbare Name des Feldes fuer die lokale Smart-Meter-Verbindung `MD`. Aktivieren Sie danach `Lokaler Nulleinspeisemodus` (`MM`). `MD` ist ein Schreibfeld und kein garantiertes Ruecklesefeld. Bestaetigen Sie das Ergebnis ueber `Zaehlerstatus` (`MS`) und das reale Zaehlerverhalten.
 
 ## Entitaetsbeschreibung
 
@@ -178,7 +178,7 @@ Hinweise:
 
 | Entitaets-ID | Name | Beschreibung |
 |--------------|------|--------------|
-| `MD` | Lokale Smart-Meter-Verbindung | JSON-Zeichenkette fuer die lokale Smart-Meter-Verbindung im Modus "Lokaler Nulleinspeisemodus". Es muss exakt der finale geraeteseitige Wert aus [API.md](API.md) verwendet werden. Die Einstellung wirkt direkt, ist aber kein garantiertes Ruecklesefeld |
+| `MD` | Lokales Zhlerdatenformat | JSON-Zeichenkette fuer die lokale Smart-Meter-Verbindung im Modus "Lokaler Nulleinspeisemodus". Es muss exakt der finale geraeteseitige Wert aus [API.md](API.md) verwendet werden. Die Einstellung wirkt direkt, ist aber kein garantiertes Ruecklesefeld |
 | `TZ` | Systemzeitzone | POSIX-Zeitzonenstring. Fuer China kann z. B. `CST-8` verwendet werden; fuer Deutschland mit Sommerzeit z. B. `CET-1CEST,M3.5.0,M10.5.0/3`. Die Einstellung wirkt direkt, ist aber kein garantiertes Ruecklesefeld |
 
 ### Button
