@@ -95,7 +95,7 @@ In the SunEnergyXT app, **Smart Strategy - Local Network (WLAN)** is the app-sid
 
 The official Home Assistant blueprint is maintained separately: [SunEnergyXT zero feed-in blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). When using the blueprint, keep `MM` disabled because the blueprint controls the device from Home Assistant entities instead of using the device's direct local meter-reading path.
 
-To use the device-local path from Home Assistant, open the SunEnergyXT device in Home Assistant and edit the `Local Meter Data Format` text entity (`MD`) with the final meter JSON from [API.md](API.md). Then enable `Local Zero Feed-in mode` (`MM`). In the current integration, `Local Meter Data Format` is the visible Home Assistant name of the `MD` meter connection field. It is a write field, not a guaranteed readback field; confirm the result through `Meter Status` (`MS`) and live meter behavior.
+To use the device-local path from Home Assistant, open the SunEnergyXT device in Home Assistant and save the final meter JSON from [API.md](API.md) in the `Local Meter Data Format` text entity (`MD`). In the current integration, saving a non-empty `MD` value writes `MD` and enables `Local Zero Feed-in mode` (`MM`) together. Clearing `MD` disables `MM`, while turning `MM` off also clears `MD`. `Local Meter Data Format` is the visible Home Assistant name of the `MD` meter connection field. It is a write field, not a guaranteed readback field; confirm the result through `Meter Status` (`MS`) and live meter behavior.
 
 ## Entity Description
 
@@ -171,7 +171,7 @@ Notes:
 | Entity ID | Name | Description |
 |-----------|------|-------------|
 | `LM` | Local mode | Local mode switch. When enabled, the device prioritizes local-side configuration |
-| `MM` | Local Zero Feed-in mode | Local zero feed-in mode switch. Prepare a valid `MD` local meter connection setting before enabling it. Turning it off also clears `MD` |
+| `MM` | Local Zero Feed-in mode | Local zero feed-in mode switch. It cannot be enabled while `MD` is empty. Turning it off also clears `MD` |
 | `PM` | System Parallel Mode | Parallel mode switch. Use only when the device topology and firmware support it |
 | `LFB` | Load Priority Switch | Load priority switch |
 | `LPS` | Off-Grid Output Switch | Off-grid output switch |
@@ -180,7 +180,7 @@ Notes:
 
 | Entity ID | Name | Description |
 |-----------|------|-------------|
-| `MD` | Local Meter Data Format | Local meter connection JSON string for Local Zero Feed-in mode. Fill in the exact final device-side value shown in [API.md](API.md). It takes effect directly, but should not be used as a guaranteed readback field |
+| `MD` | Local Meter Data Format | Local meter connection JSON string for Local Zero Feed-in mode. Saving a non-empty value also enables `MM`; clearing it disables `MM`. Fill in the exact final device-side value shown in [API.md](API.md). It takes effect directly, but should not be used as a guaranteed readback field |
 | `TZ` | System Time Zone | POSIX timezone string. For example, China can use `CST-8`; Germany with DST can use `CET-1CEST,M3.5.0,M10.5.0/3`. It takes effect directly, but should not be used as a guaranteed readback field |
 
 ### Button

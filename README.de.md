@@ -94,7 +94,7 @@ In der SunEnergyXT App ist **Smarte Strategie - Lokales Netzwerk (WLAN)** der Ap
 
 Die offizielle Home-Assistant-Blueprint wird separat gepflegt: [SunEnergyXT Nulleinspeisungs-Blueprint](https://github.com/SunEnergyXT/sunenergyxt-500-zero-feed-in-blueprint). Wenn diese Blueprint verwendet wird, sollte `MM` deaktiviert bleiben, weil die Blueprint das Geraet ueber Home-Assistant-Entitaeten steuert und nicht den direkten lokalen Zaehlerlesepfad des Geraets nutzt.
 
-Um den geraeteinternen lokalen Pfad aus Home Assistant zu verwenden, oeffnen Sie das SunEnergyXT-Geraet in Home Assistant und bearbeiten Sie die Textentitaet `Lokales Zhlerdatenformat` (`MD`) mit dem finalen Zaehler-JSON aus [API.md](API.md). In der aktuellen Integration ist `Lokales Zhlerdatenformat` der in Home Assistant sichtbare Name des Feldes fuer die lokale Smart-Meter-Verbindung `MD`. Aktivieren Sie danach `Lokaler Nulleinspeisemodus` (`MM`). `MD` ist ein Schreibfeld und kein garantiertes Ruecklesefeld. Bestaetigen Sie das Ergebnis ueber `Zaehlerstatus` (`MS`) und das reale Zaehlerverhalten.
+Um den geraeteinternen lokalen Pfad aus Home Assistant zu verwenden, oeffnen Sie das SunEnergyXT-Geraet in Home Assistant und speichern Sie das finale Zaehler-JSON aus [API.md](API.md) in der Textentitaet `Lokales Zhlerdatenformat` (`MD`). In der aktuellen Integration wird beim Speichern eines nicht leeren `MD`-Werts `MD` geschrieben und `Lokaler Nulleinspeisemodus` (`MM`) gleichzeitig aktiviert. Das Leeren von `MD` deaktiviert `MM`; das Ausschalten von `MM` leert zugleich `MD`. `Lokales Zhlerdatenformat` ist der in Home Assistant sichtbare Name des Feldes fuer die lokale Smart-Meter-Verbindung `MD`. `MD` ist ein Schreibfeld und kein garantiertes Ruecklesefeld. Bestaetigen Sie das Ergebnis ueber `Zaehlerstatus` (`MS`) und das reale Zaehlerverhalten.
 
 ## Entitaetsbeschreibung
 
@@ -169,7 +169,7 @@ Hinweise:
 | Entitaets-ID | Name | Beschreibung |
 |--------------|------|--------------|
 | `LM` | Lokaler Modus | Schalter fuer den lokalen Modus. Wenn aktiv, priorisiert das Geraet die lokale Konfiguration |
-| `MM` | Lokaler Nulleinspeisemodus | Schalter fuer den Modus "Lokaler Nulleinspeisemodus". Vor dem Aktivieren sollte eine gueltige `MD`-Smart-Meter-Verbindung hinterlegt werden. Beim Ausschalten wird `MD` ebenfalls geleert |
+| `MM` | Lokaler Nulleinspeisemodus | Schalter fuer den Modus "Lokaler Nulleinspeisemodus". Solange `MD` leer ist, kann der Schalter nicht aktiviert werden. Beim Ausschalten wird `MD` ebenfalls geleert |
 | `PM` | Parallelschaltmodus des Systems | Schalter fuer den Parallelbetrieb. Nur verwenden, wenn Geraetetopologie und Firmware dies unterstuetzen |
 | `LFB` | Schalter fuer Lastprioritaet | Schalter fuer Lastprioritaet |
 | `LPS` | Schalter fuer den Inselausgang | Schalter fuer den Inselausgang |
@@ -178,7 +178,7 @@ Hinweise:
 
 | Entitaets-ID | Name | Beschreibung |
 |--------------|------|--------------|
-| `MD` | Lokales Zhlerdatenformat | JSON-Zeichenkette fuer die lokale Smart-Meter-Verbindung im Modus "Lokaler Nulleinspeisemodus". Es muss exakt der finale geraeteseitige Wert aus [API.md](API.md) verwendet werden. Die Einstellung wirkt direkt, ist aber kein garantiertes Ruecklesefeld |
+| `MD` | Lokales Zhlerdatenformat | JSON-Zeichenkette fuer die lokale Smart-Meter-Verbindung im Modus "Lokaler Nulleinspeisemodus". Ein nicht leerer Wert aktiviert zugleich `MM`; das Leeren deaktiviert `MM`. Es muss exakt der finale geraeteseitige Wert aus [API.md](API.md) verwendet werden. Die Einstellung wirkt direkt, ist aber kein garantiertes Ruecklesefeld |
 | `TZ` | Systemzeitzone | POSIX-Zeitzonenstring. Fuer China kann z. B. `CST-8` verwendet werden; fuer Deutschland mit Sommerzeit z. B. `CET-1CEST,M3.5.0,M10.5.0/3`. Die Einstellung wirkt direkt, ist aber kein garantiertes Ruecklesefeld |
 
 ### Button
