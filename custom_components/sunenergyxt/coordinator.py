@@ -29,7 +29,13 @@ class SunlitDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     Handles fetching and updating data from the device at regular intervals.
     """
 
-    def __init__(self, hass: HomeAssistant, sn: str, ip: str) -> None:
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        sn: str,
+        ip: str,
+        polling_interval: int,
+    ) -> None:
         """
         Initialize the data update coordinator.
 
@@ -46,7 +52,7 @@ class SunlitDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             hass,
             _LOGGER,
             name=f"SunlitMonitor-{sn}",
-            update_interval=timedelta(seconds=3),
+            update_interval=timedelta(seconds=polling_interval),
         )
 
     async def _async_update_data(self) -> dict[str, Any]:
@@ -81,6 +87,13 @@ class SunlitDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             _LOGGER.warning("Cannot connect to device (%s): %s", self._ip, err)
             msg = "Cannot connect"
             raise UpdateFailed(msg) from None
+        except RuntimeError as err:
+            _LOGGER.warning(
+                "Device returned an invalid response (%s): %s",
+                self._ip,
+                err,
+            )
+            raise UpdateFailed(str(err)) from err
         except Exception as err:
             _LOGGER.exception("Error updating SunEnergyXT Monitor data: %s", err)
             raise

@@ -138,6 +138,8 @@ Schreibregeln:
 | `MG` | `integer` | Ja | Maximale netzgekoppelte Ausgangsleistung. | Empfohlener Bereich: `1..800` fuer 500 Standard, `1..2400` fuer 500 Pro. Empfohlene Schrittweite: `1W`. |
 | `SI` | `integer` | Ja | Minimaler Entlade-SOC im Netzbetrieb. | Empfohlene Werte: `1`, `10` oder `20`. |
 | `SA` | `integer` | Ja | Maximaler Lade-SOC im Netzbetrieb. | Empfohlene Werte: `70`, `80`, `90` oder `100`. |
+| `SI1` | `integer` | Ja | Entlade-SOC-Hysterese. | Standard: `5 %`. Eine Aenderung dieses geraeteseitigen Werts kann bestehende Strategien beeinflussen. Nach einem Test oder vor dem Wechsel zu einer anderen Strategie wieder auf `5 %` stellen. |
+| `SA1` | `integer` | Ja | Lade-SOC-Hysterese. | Standard: `5 %`. Eine Aenderung dieses geraeteseitigen Werts kann bestehende Strategien beeinflussen. Nach einem Test oder vor dem Wechsel zu einer anderen Strategie wieder auf `5 %` stellen. |
 | `SO` | `integer` | Ja | Minimaler Entlade-SOC im Inselbetrieb. | Empfohlene Werte: `1`, `10` oder `20`. |
 | `LM` | `integer` | Ja | Schalter fuer den lokalen Modus. `0 = aus`, `1 = ein`. | Sobald der lokale Modus aktiviert ist, ist zu erwarten, dass die meisten Cloud-Fernsteuerungen blockiert bleiben, bis der lokale Modus wieder deaktiviert wird. |
 | `MM` | `integer` | Ja | Schalter fuer den lokalen Nulleinspeisemodus. `0 = aus`, `1 = ein`. | Am sichersten ist es, zuerst ein gueltiges `MD` vorzubereiten oder `MM = 1` zusammen mit `MD` in derselben Anfrage zu senden. Die Home-Assistant-Integration leert `MD`, wenn `MM` ausgeschaltet wird. Den finalen Zaehlerstatus ueber `MS` bestaetigen. |
@@ -157,8 +159,6 @@ Die folgenden Felder koennen auf einigen Geraeten oder Firmware-Versionen auftre
 
 | Feld | Typ | Bedeutung | Hinweise |
 | --- | --- | --- | --- |
-| `SI1` | `integer` | Entlade-SOC-Hysterese | Nicht als Standardfeld fuer Integrationen empfohlen |
-| `SA1` | `integer` | Lade-SOC-Hysterese | Nicht als Standardfeld fuer Integrationen empfohlen |
 | `PO` | `integer` | Leistungs-Ein/Aus-Steuerung | Nicht als Standardfeld fuer Integrationen empfohlen |
 | `PT` | `integer` | Automatische Abschaltzeit | Ein haeufiger Bereich ist `30..1440` Minuten, sollte aber nicht als feste oeffentliche Zusage behandelt werden |
 | `SD` | `integer` | Feld fuer Ein/Aus des Geraets | Nur verwenden, wenn das Firmware-Verhalten bestaetigt ist |
@@ -339,7 +339,7 @@ Wenn der aktuelle Zaehler-Subtyp nicht in der obigen Liste aufgefuehrt ist, soll
 | `LD` | `number` | Taegliche Inselbetriebs-Lastenergie | Rohwert in `Wh` |
 | `GS` | `integer` | Ruecklesewert des aktuellen Netzleistungs-Sollwerts | Die Vorzeichenbedeutung entspricht dem Schreibvertrag |
 | `IS` | `integer` | Ruecklesewert der aktuellen maximalen Netzeinspeisegrenze | Die Obergrenze haengt vom Modell ab |
-| `SI / SA / SO` | `integer` | SOC-Grenzwerte | `SI1 / SA1` sind reservierte Felder und sollten nicht standardmaessig angenommen werden |
+| `SI / SA / SI1 / SA1 / SO` | `integer` | SOC-Grenzwerte und Hysterese | `SI1` und `SA1` haben den Standardwert `5 %`; nach einem Test oder vor dem Wechsel zu einer anderen Strategie wieder auf `5 %` stellen |
 | `LM` | `integer` | Status des lokalen Modus | `0 = aus`, `1 = ein` |
 | `MM` | `integer` | Status des lokalen Nulleinspeisemodus | `0 = aus`, `1 = ein` |
 | `MD` | `string` | Laufzeitwert der Zaehlerverbindung, wenn vorhanden | Nicht als garantiertes Echo des zuletzt geschriebenen `MD` verwenden |

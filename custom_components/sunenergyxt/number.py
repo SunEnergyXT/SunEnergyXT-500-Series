@@ -59,6 +59,20 @@ NUMBER_META: dict[str, dict[str, Any]] = {
         "unit": "%",
         "icon": "mdi:battery-high",
     },
+    "SI1": {
+        "min_value": 0,
+        "max_value": 100,
+        "step": 1,
+        "unit": "%",
+        "icon": "mdi:battery-sync-outline",
+    },
+    "SA1": {
+        "min_value": 0,
+        "max_value": 100,
+        "step": 1,
+        "unit": "%",
+        "icon": "mdi:battery-sync",
+    },
     "SO": {
         "min_value": 1,
         "max_value": 30,
@@ -118,6 +132,8 @@ async def async_setup_entry(
         "IS",
         "SI",
         "SA",
+        "SI1",
+        "SA1",
         "SO",
         "PT",
         "MG",
@@ -186,11 +202,11 @@ class SunlitNumber(CoordinatorEntity[SunlitDataUpdateCoordinator], NumberEntity)
         self._attr_device_info = device_info
 
         min_value = meta.get("min_value")
-        if min_value:
+        if min_value is not None:
             self._attr_native_min_value = min_value
 
         max_value = meta.get("max_value")
-        if max_value:
+        if max_value is not None:
             self._attr_native_max_value = max_value
 
         if device_info["model"] == "SunEnergyXT 500":

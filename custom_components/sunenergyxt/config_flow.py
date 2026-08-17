@@ -26,10 +26,20 @@ import aiohttp
 import async_timeout
 import voluptuous as vol
 from homeassistant import config_entries, exceptions
+from homeassistant.core import callback
 from homeassistant.data_entry_flow import AbortFlow, FlowResult
+from homeassistant.helpers import selector
 from homeassistant.helpers.service_info.zeroconf import ZeroconfServiceInfo
 
-from .const import DOMAIN, HOST_PREFIX, HOST_SUFFIX
+from .const import (
+    CONF_POLLING_INTERVAL,
+    DEFAULT_POLLING_INTERVAL,
+    DOMAIN,
+    HOST_PREFIX,
+    HOST_SUFFIX,
+    MAX_POLLING_INTERVAL,
+    MIN_POLLING_INTERVAL,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -276,6 +286,54 @@ class SunlitConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 "host": self._discovered_ip,
             },
             errors=errors,
+        )
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(
+        config_entry: config_entries.ConfigEntry,
+    ) -> config_entries.OptionsFlow:
+        """Return the options flow for an existing device."""
+        return SunlitOptionsFlowHandler(config_entry)
+
+
+class SunlitOptionsFlowHandler(config_entries.OptionsFlow):
+    """Handle SunEnergyXT integration options."""
+
+    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+        """Initialize the options flow."""
+        self.options = dict(config_entry.options)
+
+    async def async_step_init(
+        self,
+        user_input: dict[str, Any] | None = None,
+    ) -> FlowResult:
+        """Manage the polling interval option."""
+        if user_input is not None:
+            return self.async_create_entry(title="", data=user_input)
+
+        current_interval = self.options.get(
+            CONF_POLLING_INTERVAL,
+            DEFAULT_POLLING_INTERVAL,
+        )
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(
+                        CONF_POLLING_INTERVAL,
+                        default=current_interval,
+                    ): selector.NumberSelector(
+                        selector.NumberSelectorConfig(
+                            min=MIN_POLLING_INTERVAL,
+                            max=MAX_POLLING_INTERVAL,
+                            step=1,
+                            mode=selector.NumberSelectorMode.BOX,
+                            unit_of_measurement="s",
+                        )
+                    )
+                }
+            ),
         )
 
 

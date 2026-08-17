@@ -80,6 +80,10 @@ Usage notes:
 - The `Today's PV Generation Energy` (`PD`) sensor requires control module firmware `ES 1.1.4` or later. Older firmware can continue using the integration, but may not report this sensor.
 - After changing a control item, wait for the next polling cycle or read the status again to confirm the final value
 
+### Polling interval
+
+The integration reads the device every 3 seconds by default. The interval can be changed in the integration options from 3 to 60 seconds. Keep the default 3-second interval for Home Assistant control loops such as the zero-feed-in blueprint; a longer interval is suitable for device-local zero feed-in or monitoring, but slows updates of the device SOC, PV, and power entities used by automations.
+
 ## Zero Feed-in Mode Selection
 
 Use only one zero feed-in control path at a time. Mixing the device's local meter control and the Home Assistant blueprint can make the resulting behavior difficult to predict.
@@ -163,8 +167,12 @@ Notes:
 | `MG` | Maximum Grid-Connected Output Power | W | `1` to `2400` | `1` | Maximum grid-connected output power. The upper limit is `800W` for 500 Standard and `2400W` for 500 Pro |
 | `SI` | System Min Discharge SOC | % | `1` to `30` | `1` | Minimum SOC allowed for discharge in on-grid scenarios |
 | `SA` | System Max Charge SOC | % | `70` to `100` | `1` | Maximum SOC allowed for charge in on-grid scenarios |
+| `SI1` | Discharge SOC Hysteresis (Default: 5%) | % | `0` to `100` | `1` | SOC hysteresis before discharge resumes after the minimum discharge SOC is reached. Default: `5%` |
+| `SA1` | Charge SOC Hysteresis (Default: 5%) | % | `0` to `100` | `1` | SOC hysteresis before charging resumes after the maximum charge SOC is reached. Default: `5%` |
 | `SO` | System Load Port Discharge Limit SOC | % | `1` to `30` | `1` | Minimum SOC allowed for discharge in off-grid / load port scenarios |
 | `PT` | System Auto-Shutdown Time Setting | min | `30` to `1440` | `1` | Auto-shutdown time |
+
+> Changing `SI1` or `SA1` changes device-side SOC control behavior and may affect existing strategies. Keep both values at the default `5%` unless a different hysteresis is specifically required, and restore both values to `5%` after testing or before changing to another strategy.
 
 ### Switch
 

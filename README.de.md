@@ -79,6 +79,10 @@ Hinweise zur Nutzung:
 - Wenn Sie die automatische Erkennung nutzen moechten, muss das Netzwerk mDNS / Zeroconf zulassen
 - Nach dem Aendern eines Steuerwerts sollte der finale Zustand durch die naechste Aktualisierung oder ein erneutes Auslesen bestaetigt werden
 
+### Abfrageintervall
+
+Die Integration liest das Geraet standardmaessig alle 3 Sekunden aus. Das Intervall kann in den Integrationseinstellungen zwischen 3 und 60 Sekunden geaendert werden. Fuer Home-Assistant-Regelkreise wie die Nulleinspeisungs-Blueprint sollten die standardmaessigen 3 Sekunden beibehalten werden. Ein laengeres Intervall eignet sich fuer den geraeteinternen lokalen Nulleinspeisemodus oder Monitoring, verlangsamt aber die Aktualisierung von SOC-, PV- und Leistungsentitaeten, die von Automatisierungen verwendet werden.
+
 ## Auswahl des Nulleinspeisungsmodus
 
 Verwenden Sie immer nur einen Regelpfad fuer Nulleinspeisung gleichzeitig. Wenn geraeteinterner lokaler Modus und Home-Assistant-Blueprint gleichzeitig gemischt werden, ist das resultierende Verhalten schwer vorhersehbar.
@@ -161,8 +165,12 @@ Hinweise:
 | `MG` | Maximale netzgekoppelte Ausgangsleistung | W | `1` bis `2400` | `1` | Maximale netzgekoppelte Ausgangsleistung. Die Obergrenze liegt bei `800W` fuer SunEnergyXT 500 und `2400W` fuer SunEnergyXT 500 Pro |
 | `SI` | System Entladegrenze | % | `1` bis `30` | `1` | Minimaler SOC fuer Entladung im On-Grid-Betrieb |
 | `SA` | System Ladegrenze | % | `70` bis `100` | `1` | Maximaler SOC fuer Ladung im On-Grid-Betrieb |
+| `SI1` | Entlade-SOC-Hysterese (Standard: 5 %) | % | `0` bis `100` | `1` | SOC-Hysterese, bevor die Entladung nach Erreichen der Entladegrenze wieder freigegeben wird. Standard: `5 %` |
+| `SA1` | Lade-SOC-Hysterese (Standard: 5 %) | % | `0` bis `100` | `1` | SOC-Hysterese, bevor das Laden nach Erreichen der Ladegrenze wieder freigegeben wird. Standard: `5 %` |
 | `SO` | Systemlastanschluss-Entladegrenze | % | `1` bis `30` | `1` | Minimaler SOC fuer Entladung im Off-Grid- bzw. Lastanschluss-Betrieb |
 | `PT` | Einstellung der automatischen Abschaltzeit | min | `30` bis `1440` | `1` | Zeit fuer die automatische Abschaltung |
+
+> Eine Aenderung von `SI1` oder `SA1` veraendert das geraeteseitige SOC-Regelverhalten und kann bestehende Strategien beeinflussen. Belassen Sie beide Werte beim Standardwert `5 %`, sofern keine andere Hysterese erforderlich ist. Stellen Sie beide Werte nach einem Test oder vor dem Wechsel zu einer anderen Strategie wieder auf `5 %` zurueck.
 
 ### Switch
 

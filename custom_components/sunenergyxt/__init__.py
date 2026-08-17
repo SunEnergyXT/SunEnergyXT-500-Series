@@ -26,7 +26,13 @@ from homeassistant.const import Platform
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import config_validation as cv
 
-from .const import DOMAIN
+from .const import (
+    CONF_POLLING_INTERVAL,
+    DEFAULT_POLLING_INTERVAL,
+    DOMAIN,
+    MAX_POLLING_INTERVAL,
+    MIN_POLLING_INTERVAL,
+)
 from .coordinator import SunlitDataUpdateCoordinator
 
 if TYPE_CHECKING:
@@ -94,7 +100,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         msg = f"Device not ready: {err}"
         raise ConfigEntryNotReady(msg) from err
 
-    coordinator = SunlitDataUpdateCoordinator(hass=hass, sn=sn, ip=ip)
+    try:
+        polling_interval = int(
+            entry.options.get(CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL)
+        )
+    except (TypeError, ValueError):
+        polling_interval = DEFAULT_POLLING_INTERVAL
+    polling_interval = max(
+        MIN_POLLING_INTERVAL,
+        min(MAX_POLLING_INTERVAL, polling_interval),
+    )
+    coordinator = SunlitDataUpdateCoordinator(
+        hass=hass,
+        sn=sn,
+        ip=ip,
+        polling_interval=polling_interval,
+    )
     await coordinator.async_config_entry_first_refresh()
 
     hass.data[DOMAIN][entry.entry_id] = {
@@ -103,6 +124,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         "model": model,
         "coordinator": coordinator,
     }
+    entry.async_on_unload(entry.add_update_listener(async_reload_entry))
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
@@ -126,3 +148,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(entry.entry_id, None)
 
     return unload_ok
+
+
+async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Reload the integration after an options change."""
+    await hass.config_entries.async_reload(entry.entry_id)

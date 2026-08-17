@@ -138,6 +138,8 @@ Write contract notes:
 | `MG` | `integer` | Yes | Maximum grid-connected output power. | Recommended range: `1..800` for 500 Standard, `1..2400` for 500 Pro. Recommended step: `1W`. |
 | `SI` | `integer` | Yes | On-grid minimum discharge SOC. | Recommended values: `1`, `10`, or `20`. |
 | `SA` | `integer` | Yes | On-grid maximum charge SOC. | Recommended values: `70`, `80`, `90`, or `100`. |
+| `SI1` | `integer` | Yes | Discharge SOC hysteresis. | Default: `5%`. Changing this device-side value may affect existing strategies. Restore it to `5%` after testing or before changing to another strategy. |
+| `SA1` | `integer` | Yes | Charge SOC hysteresis. | Default: `5%`. Changing this device-side value may affect existing strategies. Restore it to `5%` after testing or before changing to another strategy. |
 | `SO` | `integer` | Yes | Off-grid minimum discharge SOC. | Recommended values: `1`, `10`, or `20`. |
 | `LM` | `integer` | Yes | Local mode switch. `0 = off`, `1 = on`. | Once local mode is enabled, most cloud-side remote control is expected to be restricted until local mode is turned off. |
 | `MM` | `integer` | Yes | Local Zero Feed-in mode switch. `0 = off`, `1 = on`. | The safest pattern is to prepare a valid `MD` first, or submit `MM = 1` together with `MD` in the same request. The Home Assistant integration clears `MD` when turning `MM` off. Confirm final meter status via `MS`. |
@@ -157,8 +159,6 @@ The following fields may appear on some devices or firmware versions, but they a
 
 | Field | Type | Meaning | Notes |
 | --- | --- | --- | --- |
-| `SI1` | `integer` | Discharge SOC hysteresis | Not recommended as a default integration field |
-| `SA1` | `integer` | Charge SOC hysteresis | Not recommended as a default integration field |
 | `PO` | `integer` | Power enable/stop control | Not recommended as a default integration field |
 | `PT` | `integer` | Auto power-off time | A common range is `30..1440` minutes, but this should not be treated as a fixed public guarantee |
 | `SD` | `integer` | Power on/off field | Use only after firmware behavior is confirmed |
@@ -339,7 +339,7 @@ If the current meter subtype is not listed above, do not fill `MD` for that Tasm
 | `LD` | `number` | Daily off-grid load output energy | Raw unit `Wh` |
 | `GS` | `integer` | Echo of the current on-grid power setpoint | Sign semantics match the write contract |
 | `IS` | `integer` | Echo of the current max grid output setting | Upper bound depends on model |
-| `SI / SA / SO` | `integer` | SOC limits | `SI1 / SA1` are reserved fields and should not be assumed by default |
+| `SI / SA / SI1 / SA1 / SO` | `integer` | SOC limits and hysteresis | `SI1` and `SA1` default to `5%`; restore them to `5%` after testing or before changing to another strategy |
 | `LM` | `integer` | Local mode state | `0 = off`, `1 = on` |
 | `MM` | `integer` | Local Zero Feed-in mode state | `0 = off`, `1 = on` |
 | `MD` | `string` | Meter connection runtime value when present | Do not use it as guaranteed echo of the last written `MD` |

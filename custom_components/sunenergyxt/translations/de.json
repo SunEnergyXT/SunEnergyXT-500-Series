@@ -33,6 +33,17 @@
             "unknown": "Ein unbekannter Fehler ist aufgetreten."
         }
     },
+    "options": {
+        "step": {
+            "init": {
+                "title": "SunEnergyXT-Einstellungen",
+                "description": "Waehlen Sie, wie oft Home Assistant das Geraet ausliest. Standard: 3 Sekunden. Dies ist auch das Aktualisierungsintervall fuer Geraetedaten, die von Automatisierungen verwendet werden. Ein laengeres Intervall reduziert die Geraeteabfragen, macht Daten und Regelung aber langsamer. SI1 und SA1 sind geraeteseitige SOC-Hysteresewerte; beide haben den Standardwert 5 %. Eine Aenderung kann Geraetestrategien beeinflussen. Stellen Sie beide Werte nach einem Test oder vor dem Wechsel zu einer anderen Strategie wieder auf 5 % zurueck. Die offizielle Nulleinspeisungs-Blueprint laeuft unabhaengig weiter, kann aber bei zu alten Messwerten voruebergehend warten.",
+                "data": {
+                    "polling_interval": "Abfrageintervall"
+                }
+            }
+        }
+    },
     "entity": {
         "sensor": {
             "ws": {
@@ -191,6 +202,12 @@
             },
             "sa": {
                 "name": "System Ladegrenze"
+            },
+            "si1": {
+                "name": "Entlade-SOC-Hysterese (Standard: 5 %)"
+            },
+            "sa1": {
+                "name": "Lade-SOC-Hysterese (Standard: 5 %)"
             },
             "so": {
                 "name": "Systemlastanschluss-Entladegrenze"
