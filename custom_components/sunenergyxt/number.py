@@ -209,7 +209,11 @@ class SunlitNumber(CoordinatorEntity[SunlitDataUpdateCoordinator], NumberEntity)
         if max_value is not None:
             self._attr_native_max_value = max_value
 
-        if device_info["model"] == "SunEnergyXT 500":
+        # Standard 500 units are limited to 800 W. Pro and Pro AC Core
+        # variants share the 2400 W limit and may include extra suffixes.
+        model_name = str(device_info["model"]).upper()
+        is_standard_500 = "500" in model_name and "PRO" not in model_name
+        if is_standard_500:
             if self._key == "GS":
                 self._attr_native_max_value = 800
             if self._key == "MG":

@@ -114,7 +114,7 @@ Notes:
 | Entity ID | Name | Unit | Description |
 |-----------|------|------|-------------|
 | `WS` | Wi-Fi SSID | - | Wi-Fi connection diagnostic information |
-| `WR` | Wi-Fi Signal Strength | dB | Current Wi-Fi signal strength |
+| `WR` | Wi-Fi Signal Strength | dBm | Current Wi-Fi signal strength |
 | `ST` | System Status | - | Device running status. Common values: `0 = Shutdown`, `1 = Standby`, `2 = Running`, `3 = Upgrading` |
 | `IW` | System Total Input Power | W | Current total system input power |
 | `OP` | System Total Output Power | W | Current total system output power |
@@ -162,9 +162,9 @@ Notes:
 
 | Entity ID | Name | Unit | Range | Step | Description |
 |-----------|------|------|-------|------|-------------|
-| `GS` | System Grid Port Power Setpoint | W | `-2400` to `2400` | `10` | Grid port power setpoint. A positive value usually means export/feed-in; a negative value usually means grid import or grid charging. The common positive upper limit is `800W` for 500 Standard and `2400W` for 500 Pro |
+| `GS` | System Grid Port Power Setpoint | W | `-2400` to `800` for 500; `-2400` to `2400` for 500 PRO and 500 PRO AC Core | `10` | Grid port power setpoint. Positive values mean export/feed-in; negative values mean grid import or grid charging |
 | `IS` | System Max Inverter Power Setpoint | W | `1` to `2400` | `10` | Maximum inverter output power setpoint |
-| `MG` | Maximum Grid-Connected Output Power | W | `1` to `2400` | `1` | Maximum grid-connected output power. The upper limit is `800W` for 500 Standard and `2400W` for 500 Pro |
+| `MG` | Maximum Grid-Connected Output Power | W | `1` to `800` for 500; `1` to `2400` for 500 PRO and 500 PRO AC Core | `1` | Maximum grid-connected output power |
 | `SI` | System Min Discharge SOC | % | `1` to `30` | `1` | Minimum SOC allowed for discharge in on-grid scenarios |
 | `SA` | System Max Charge SOC | % | `70` to `100` | `1` | Maximum SOC allowed for charge in on-grid scenarios |
 | `SI1` | Discharge SOC Hysteresis (Default: 5%) | % | `0` to `100` | `1` | SOC hysteresis before discharge resumes after the minimum discharge SOC is reached. Default: `5%` |
@@ -182,7 +182,7 @@ Notes:
 | `MM` | Local Zero Feed-in mode | Local zero feed-in mode switch. It cannot be enabled while `MD` is empty. Turning it off also clears `MD` |
 | `PM` | System Parallel Mode | Parallel mode switch. Use only when the device topology and firmware support it |
 | `LFB` | Load Priority Switch | Load priority switch |
-| `LPS` | Off-Grid Output Switch | Off-grid output switch |
+| `LPS` | Off-Grid Output Switch | Enables or disables the off-grid output. The device default is enabled |
 
 ### Text
 

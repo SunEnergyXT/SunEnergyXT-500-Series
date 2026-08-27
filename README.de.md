@@ -113,7 +113,7 @@ Hinweise:
 | Entitaets-ID | Name | Einheit | Beschreibung |
 |--------------|------|---------|--------------|
 | `WS` | WLAN-SSID | - | Diagnoseinformationen zur WLAN-Verbindung |
-| `WR` | WLAN-Signalstaerke | dB | Aktuelle WLAN-Signalstaerke |
+| `WR` | WLAN-Signalstaerke | dBm | Aktuelle WLAN-Signalstaerke |
 | `ST` | Systemstatus | - | Betriebsstatus des Geraets. Hauefige Werte: `0 = Abgeschaltet`, `1 = Standby`, `2 = In Betrieb`, `3 = Upgrade` |
 | `IW` | Gesamteingangsleistung des Systems | W | Aktuelle gesamte Eingangsleistung des Systems |
 | `OP` | Gesamtausgangsleistung des Systems | W | Aktuelle gesamte Ausgangsleistung des Systems |
@@ -160,9 +160,9 @@ Hinweise:
 
 | Entitaets-ID | Name | Einheit | Bereich | Schritt | Beschreibung |
 |--------------|------|---------|---------|----------|--------------|
-| `GS` | Sollwert Leistung Netzanschluss | W | `-2400` bis `2400` | `10` | Sollwert fuer die Leistung am Netzanschluss. Positive Werte bedeuten in der Regel Einspeisung, negative Werte in der Regel Netzbezug oder Netzladen. Die uebliche obere positive Grenze ist `800W` fuer SunEnergyXT 500 und `2400W` fuer SunEnergyXT 500 Pro |
+| `GS` | Sollwert Leistung Netzanschluss | W | `-2400` bis `800` fuer 500; `-2400` bis `2400` fuer 500 PRO und 500 PRO AC Core | `10` | Sollwert fuer die Leistung am Netzanschluss. Positive Werte bedeuten Einspeisung, negative Werte Netzbezug oder Netzladen |
 | `IS` | Sollwert max. Wechselrichterleistung | W | `1` bis `2400` | `10` | Sollwert fuer die maximale Wechselrichter-Ausgangsleistung |
-| `MG` | Maximale netzgekoppelte Ausgangsleistung | W | `1` bis `2400` | `1` | Maximale netzgekoppelte Ausgangsleistung. Die Obergrenze liegt bei `800W` fuer SunEnergyXT 500 und `2400W` fuer SunEnergyXT 500 Pro |
+| `MG` | Maximale netzgekoppelte Ausgangsleistung | W | `1` bis `800` fuer 500; `1` bis `2400` fuer 500 PRO und 500 PRO AC Core | `1` | Maximale netzgekoppelte Ausgangsleistung |
 | `SI` | System Entladegrenze | % | `1` bis `30` | `1` | Minimaler SOC fuer Entladung im On-Grid-Betrieb |
 | `SA` | System Ladegrenze | % | `70` bis `100` | `1` | Maximaler SOC fuer Ladung im On-Grid-Betrieb |
 | `SI1` | Entlade-SOC-Hysterese (Standard: 5 %) | % | `0` bis `100` | `1` | SOC-Hysterese, bevor die Entladung nach Erreichen der Entladegrenze wieder freigegeben wird. Standard: `5 %` |
@@ -180,7 +180,7 @@ Hinweise:
 | `MM` | Lokaler Nulleinspeisemodus | Schalter fuer den Modus "Lokaler Nulleinspeisemodus". Solange `MD` leer ist, kann der Schalter nicht aktiviert werden. Beim Ausschalten wird `MD` ebenfalls geleert |
 | `PM` | Parallelschaltmodus des Systems | Schalter fuer den Parallelbetrieb. Nur verwenden, wenn Geraetetopologie und Firmware dies unterstuetzen |
 | `LFB` | Schalter fuer Lastprioritaet | Schalter fuer Lastprioritaet |
-| `LPS` | Schalter fuer den Inselausgang | Schalter fuer den Inselausgang |
+| `LPS` | Schalter fuer den Inselausgang | Aktiviert oder deaktiviert den Inselausgang. Der Standardwert des Geraets ist aktiviert |
 
 ### Text
 
