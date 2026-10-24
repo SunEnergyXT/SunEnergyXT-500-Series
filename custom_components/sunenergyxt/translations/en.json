@@ -127,6 +127,12 @@
             "ld": {
                 "name": "Today's Off-grid Output Energy"
             },
+            "battery_charge_energy": {
+                "name": "System Battery Charge Energy"
+            },
+            "battery_discharge_energy": {
+                "name": "System Battery Discharge Energy"
+            },
             "sc": {
                 "name": "System Battery Level"
             },

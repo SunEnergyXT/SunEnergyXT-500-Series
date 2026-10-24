@@ -127,6 +127,12 @@
             "ld": {
                 "name": "Heutige Off-Grid-Ausgabe"
             },
+            "battery_charge_energy": {
+                "name": "System-Batterie-Ladeenergie"
+            },
+            "battery_discharge_energy": {
+                "name": "System-Batterie-Entladeenergie"
+            },
             "sc": {
                 "name": "System-Speicherlevel"
             },

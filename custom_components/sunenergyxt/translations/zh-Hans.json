@@ -127,6 +127,12 @@
             "ld": {
                 "name": "系统今日逆变离网输出电量"
             },
+            "battery_charge_energy": {
+                "name": "系统电池累计充电量"
+            },
+            "battery_discharge_energy": {
+                "name": "系统电池累计放电量"
+            },
             "sc": {
                 "name": "系统总电量"
             },

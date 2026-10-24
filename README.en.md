@@ -84,6 +84,24 @@ Usage notes:
 
 The integration reads the device every 3 seconds by default. The interval can be changed in the integration options from 3 to 60 seconds. Keep the default 3-second interval for Home Assistant control loops such as the zero-feed-in blueprint; a longer interval is suitable for device-local zero feed-in or monitoring, but slows updates of the device SOC, PV, and power entities used by automations.
 
+### Energy Dashboard
+
+The device does not report battery energy counters. The integration therefore calculates two energy sensors from the battery power `BP` at each polling cycle:
+
+- `System Battery Charge Energy`: total energy charged into the battery
+- `System Battery Discharge Energy`: total energy discharged from the battery
+
+Both sensors use `kWh` and the state class `total_increasing`. They are total counters: they do not reset at midnight, and they keep their value when Home Assistant restarts normally.
+
+To show the battery in the Energy Dashboard, open the energy configuration and add a battery system in the `Home battery storage` section. Select `System Battery Charge Energy` as the energy going into the battery and `System Battery Discharge Energy` as the energy coming out of the battery.
+
+- Home Assistant calculates these values from `BP`, so they can differ slightly from the values in the SunEnergyXT app
+- The sensors do not count energy while Home Assistant is stopped or the device is not reachable
+- A longer polling interval makes the calculated values less accurate
+- If the device does not report `BP`, both sensors are unavailable
+- After a power loss or a crash of Home Assistant, the sensors restore the last saved value. This value can be up to 15 minutes old, and the Energy Dashboard can show an incorrect value for the hour of the restart
+- `System Battery Power` (`BP`) is the battery power reported by the device. You do not need to calculate it from `IW` and `OP`. If the battery system dialog of your Home Assistant version has a `Battery power` field, you can select `BP` there with the type `Inverted`, because Home Assistant expects positive values for discharging
+
 ## Zero Feed-in Mode Selection
 
 Use only one zero feed-in control path at a time. Mixing the device's local meter control and the Home Assistant blueprint can make the resulting behavior difficult to predict.
@@ -138,6 +156,8 @@ Notes:
 | `GD1` | Today's Grid Charge Energy | kWh | Today's energy charged into the system from the grid |
 | `GD2` | Today's Grid Feed-in Energy | kWh | Today's energy exported to the grid through the grid port |
 | `LD` | Today's Off-grid Output Energy | kWh | Today's off-grid inverter output energy |
+| `battery_charge_energy` | System Battery Charge Energy | kWh | Total energy charged into the battery. The integration calculates it from `BP`; see [Energy Dashboard](#energy-dashboard) |
+| `battery_discharge_energy` | System Battery Discharge Energy | kWh | Total energy discharged from the battery. The integration calculates it from `BP`; see [Energy Dashboard](#energy-dashboard) |
 | `SC` | System Battery Level | % | Overall system SOC |
 | `SC0` | Head storage | % | SOC of the head storage |
 | `SC1` | Expansion storage 1 | % | SOC of expansion storage 1 |

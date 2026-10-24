@@ -84,6 +84,24 @@ Hinweise zur Nutzung:
 
 Die Integration liest das Geraet standardmaessig alle 3 Sekunden aus. Das Intervall kann in den Integrationseinstellungen zwischen 3 und 60 Sekunden geaendert werden. Fuer Home-Assistant-Regelkreise wie die Nulleinspeisungs-Blueprint sollten die standardmaessigen 3 Sekunden beibehalten werden. Ein laengeres Intervall eignet sich fuer den geraeteinternen lokalen Nulleinspeisemodus oder Monitoring, verlangsamt aber die Aktualisierung von SOC-, PV- und Leistungsentitaeten, die von Automatisierungen verwendet werden.
 
+### Energie-Dashboard
+
+Das Geraet liefert keine Energiezaehler fuer die Batterie. Die Integration berechnet deshalb in jedem Abfragezyklus zwei Energiesensoren aus der Batterieleistung `BP`:
+
+- `System-Batterie-Ladeenergie`: gesamte in die Batterie geladene Energie
+- `System-Batterie-Entladeenergie`: gesamte aus der Batterie entladene Energie
+
+Beide Sensoren verwenden `kWh` und die Zustandsklasse `total_increasing`. Es sind Gesamtzaehler: Sie werden nicht um Mitternacht zurueckgesetzt und behalten ihren Wert bei einem normalen Neustart von Home Assistant.
+
+Um die Batterie im Energie-Dashboard anzuzeigen, fuegen Sie in der Energiekonfiguration im Bereich `Heimspeicher` ein Batteriesystem hinzu. Waehlen Sie `System-Batterie-Ladeenergie` fuer die Energie, die in die Batterie fliesst, und `System-Batterie-Entladeenergie` fuer die Energie, die aus der Batterie kommt.
+
+- Home Assistant berechnet diese Werte aus `BP`. Sie koennen daher leicht von den Werten in der SunEnergyXT App abweichen
+- Solange Home Assistant gestoppt oder das Geraet nicht erreichbar ist, zaehlen die Sensoren keine Energie
+- Ein laengeres Abfrageintervall macht die berechneten Werte ungenauer
+- Wenn das Geraet `BP` nicht meldet, sind beide Sensoren nicht verfuegbar
+- Nach einem Stromausfall oder Absturz von Home Assistant stellen die Sensoren den zuletzt gespeicherten Wert wieder her. Dieser Wert kann bis zu 15 Minuten alt sein, und das Energie-Dashboard kann fuer die Stunde des Neustarts einen falschen Wert anzeigen
+- `System-Batterieleistung` (`BP`) ist die vom Geraet gemeldete Batterieleistung. Eine Berechnung aus `IW` und `OP` ist nicht noetig. Wenn der Dialog fuer das Batteriesystem in Ihrer Home-Assistant-Version ein Feld `Batterieleistung` hat, koennen Sie dort `BP` mit dem Typ `Invertiert` waehlen, weil Home Assistant positive Werte als Entladen erwartet
+
 ## Auswahl des Nulleinspeisungsmodus
 
 Verwenden Sie immer nur einen Regelpfad fuer Nulleinspeisung gleichzeitig. Wenn geraeteinterner lokaler Modus und Home-Assistant-Blueprint gleichzeitig gemischt werden, ist das resultierende Verhalten schwer vorhersehbar.
@@ -138,6 +156,8 @@ Hinweise:
 | `GD1` | Heutige Netzladung | kWh | Energie, die heute aus dem Netz in das System geladen wurde |
 | `GD2` | Heutige Netzeinspeisung | kWh | Energie, die heute ueber den Netzanschluss ins Netz eingespeist wurde |
 | `LD` | Heutige Off-Grid-Ausgabe | kWh | Heute abgegebene Off-Grid-Ausgangsenergie |
+| `battery_charge_energy` | System-Batterie-Ladeenergie | kWh | Gesamte in die Batterie geladene Energie. Die Integration berechnet den Wert aus `BP`; siehe [Energie-Dashboard](#energie-dashboard) |
+| `battery_discharge_energy` | System-Batterie-Entladeenergie | kWh | Gesamte aus der Batterie entladene Energie. Die Integration berechnet den Wert aus `BP`; siehe [Energie-Dashboard](#energie-dashboard) |
 | `SC` | System-Speicherlevel | % | Gesamter SOC des Systems |
 | `SC0` | Kopfspeicher | % | SOC des Kopfspeichers |
 | `SC1` | Erweiterungsspeicher 1 | % | SOC des Erweiterungsspeichers 1 |
